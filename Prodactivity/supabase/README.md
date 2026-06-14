@@ -6,14 +6,18 @@ Without the env vars below, every remote call is a no-op and nothing changes.
 
 ## What syncs
 
-| Local state            | Table         |
-| ---------------------- | ------------- |
-| Habit definitions      | `habits`      |
-| Per-day progress       | `habit_logs`  |
-| Name + emoji           | `profiles`    |
+| Local state            | Table                              |
+| ---------------------- | ---------------------------------- |
+| Habit definitions      | `habits`                           |
+| Per-day progress       | `habit_logs`                       |
+| Name + emoji + @handle | `profiles`                         |
+| Friends (request→accept) | `friendships`                    |
+| Proof feed             | `posts` (+ `post-photos` storage)  |
+| Reactions              | `reactions`                        |
+| Nudges                 | `nudges`                           |
 
-The social layer (friends, feed, photos, reactions, nudges) is **not** wired to
-the backend yet — that's a follow-up.
+The social layer is local-first too: it runs on demo data on-device with no
+backend, and syncs to the tables above once an account is signed in.
 
 ## One-time setup
 
@@ -43,9 +47,15 @@ the backend yet — that's a follow-up.
    supabase db push        # applies supabase/migrations/*.sql
    ```
 
-   `0001_init.sql` creates the three tables, the `auth.users → profiles` trigger
-   that auto-provisions a profile row on sign-up, `updated_at` triggers, and the
-   owner-scoped RLS policies.
+   `0001_init.sql` creates the three habit tables, the `auth.users → profiles`
+   trigger that auto-provisions a profile row on sign-up, `updated_at` triggers,
+   and the owner-scoped RLS policies.
+
+   `0002_social.sql` adds the social layer: a searchable `@username` on profiles,
+   the `friendships` / `posts` / `reactions` / `nudges` tables, the public-read
+   `post-photos` storage bucket, and the cross-user RLS (you can read a friend's
+   posts via the `are_friends()` security-definer helper, which keeps the
+   policies from recursing through `friendships`).
 
 4. **Restart Expo** so the new `EXPO_PUBLIC_*` vars are picked up:
 

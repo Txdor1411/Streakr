@@ -82,7 +82,7 @@ export async function pullAll(userId: string): Promise<RemoteSnapshot> {
   const [habitsRes, logsRes, profileRes] = await Promise.all([
     supabase.from('habits').select('*').is('archived_at', null).order('position', { ascending: true }),
     supabase.from('habit_logs').select('habit_id, day, amount'),
-    supabase.from('profiles').select('name, emoji').eq('id', userId).maybeSingle(),
+    supabase.from('profiles').select('name, emoji, username').eq('id', userId).maybeSingle(),
   ]);
 
   if (habitsRes.error) throw habitsRes.error;
@@ -96,7 +96,9 @@ export async function pullAll(userId: string): Promise<RemoteSnapshot> {
     (logs[row.habit_id] ??= {})[row.day] = row.amount;
   }
 
-  const profile = profileRes.data ? { name: profileRes.data.name, emoji: profileRes.data.emoji } : null;
+  const profile = profileRes.data
+    ? { name: profileRes.data.name, emoji: profileRes.data.emoji, username: profileRes.data.username ?? undefined }
+    : null;
   return { habits, logs, profile };
 }
 
@@ -130,9 +132,14 @@ export async function pushLog(userId: string, habitId: string, day: string, amou
 
 export async function pushProfile(userId: string, profile: Profile): Promise<void> {
   if (!supabase) return;
-  const { error } = await supabase
-    .from('profiles')
-    .upsert({ id: userId, name: profile.name, emoji: profile.emoji });
+  // Only write username when set, so we never clobber the server-assigned handle.
+  const row: { id: string; name: string; emoji: string; username?: string } = {
+    id: userId,
+    name: profile.name,
+    emoji: profile.emoji,
+  };
+  if (profile.username) row.username = profile.username.trim().toLowerCase();
+  const { error } = await supabase.from('profiles').upsert(row);
   if (error) throw error;
 }
 

@@ -1,21 +1,43 @@
 /**
  * Social accountability layer — friends + a photo "proof" feed.
  *
- * Local-first prototype: everything lives on-device in AsyncStorage, mirroring
- * the habit store's hydrate-gate + first-ref persist pattern. The action surface
- * is deliberately resource-shaped (addPost / toggleReaction / addFriend / nudge)
- * so a real backend (Supabase/Firebase) can replace the persistence layer later
- * without touching the UI.
+ * Hybrid, mirroring the habit store:
+ *  - Signed out (or no backend configured) → a fully local demo on AsyncStorage
+ *    with seed friends/posts so the feature is explorable offline.
+ *  - Signed in with Supabase configured → real data: friends are request→accept
+ *    relationships, posts/reactions/nudges sync to the backend. Mutations are
+ *    optimistic (local state first, then a best-effort remote push).
+ *
+ * The action surface is resource-shaped so the two modes share one UI.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Directory, File, Paths } from 'expo-file-system';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { useAuth } from './auth';
+import {
+  acceptRequest as acceptRequestRemote,
+  deleteFriendship,
+  markNudgesSeen as markNudgesSeenRemote,
+  pullSocial,
+  pushPost,
+  searchUsers as searchUsersRemote,
+  sendNudge,
+  sendRequest,
+  setReaction as setReactionRemote,
+  uploadPhoto,
+} from './social-sync';
+import { uuidv4 } from './sync';
 import { Palette } from './tokens';
 
-/** The local user is always this id; friends/demo accounts get their own. */
+/** The local demo user id (real accounts use their auth uuid). */
 export const ME = 'me';
 
 export type SocialUser = { id: string; name: string; emoji: string; accent: string };
+
+/** A pending friendship, identified by its row id, plus the other party. */
+export type FriendRequest = { id: string; user: SocialUser };
 
 export type Post = {
   id: string;
@@ -26,7 +48,7 @@ export type Post = {
   habitEmoji?: string;
   accent?: string;
   streak?: number;
-  /** Persistent file URI for real posts; null for seeded/placeholder cards. */
+  /** Photo URL (remote public URL for real posts, local file URI for demo); null for seeds. */
   photoUri: string | null;
   caption?: string;
   createdAt: number;
@@ -39,7 +61,17 @@ export type Nudge = { id: string; fromId: string; toId: string; habitName?: stri
 
 export const REACTION_EMOJIS = ['👏', '🔥', '💪', '🎉'] as const;
 
-type Persisted = { friends: SocialUser[]; pool: SocialUser[]; posts: Post[]; reactions: Reactions; nudges: Nudge[] };
+type Persisted = {
+  friends: SocialUser[];
+  pool: SocialUser[];
+  posts: Post[];
+  reactions: Reactions;
+  nudges: Nudge[];
+  incoming: FriendRequest[];
+  outgoing: FriendRequest[];
+};
+/** On-disk shape: the cache plus which account it belongs to (null = demo). */
+type Cached = Persisted & { ownerId?: string | null };
 
 const STORAGE_KEY = 'prodactivity:social:v1';
 const HOUR = 3600_000;
@@ -85,6 +117,20 @@ function uid(prefix: string): string {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 }
 
+/** Copy a picked image out of the cache into a persistent app directory. */
+function persistLocalPhoto(srcUri: string): string {
+  try {
+    const dir = new Directory(Paths.document, 'posts');
+    if (!dir.exists) dir.create({ intermediates: true });
+    const ext = (srcUri.split('?')[0].split('.').pop() || 'jpg').toLowerCase();
+    const dest = new File(dir, `${Date.now()}_${Math.random().toString(36).slice(2, 7)}.${ext}`);
+    new File(srcUri).copy(dest);
+    return dest.uri;
+  } catch {
+    return srcUri; // fall back to the cache uri
+  }
+}
+
 /** Compact "2h" / "3d" / "now" relative label. */
 export function timeAgo(ts: number): string {
   const s = Math.max(0, Math.floor((Date.now() - ts) / 1000));
@@ -104,20 +150,35 @@ export type NewPost = Pick<Post, 'kind' | 'habitName' | 'habitEmoji' | 'accent' 
 
 type SocialValue = {
   ready: boolean;
+  /** True when signed in with a configured backend (real data, not demo). */
+  live: boolean;
+  /** The current user's id: their auth uuid when live, otherwise the demo `ME`. */
+  meId: string;
   friends: SocialUser[];
+  /** Demo-only suggested accounts (empty when live — use `searchUsers` instead). */
   pool: SocialUser[];
   posts: Post[];
   reactions: Reactions;
   nudges: Nudge[];
+  /** Pending requests received / sent (live only). */
+  incoming: FriendRequest[];
+  outgoing: FriendRequest[];
   /** Posts from added friends + me, newest first. */
   feedPosts: Post[];
   unseenNudges: Nudge[];
   userById: (id: string) => SocialUser | undefined;
+  /** Persist a picked photo: uploads to storage when live, else keeps it on-device. */
+  preparePhoto: (localUri: string) => Promise<string>;
   addPost: (post: NewPost) => void;
   toggleReaction: (postId: string, emoji: string) => void;
-  addFriend: (id: string) => void;
+  /** Find users by @username (live only); excludes existing friends/requests. */
+  searchUsers: (query: string) => Promise<SocialUser[]>;
+  /** Demo: add immediately. Live: send a friend request. */
+  requestFriend: (user: SocialUser) => void;
+  acceptRequest: (req: FriendRequest) => void;
+  /** Decline an incoming request or cancel an outgoing one. */
+  removeRequest: (req: FriendRequest) => void;
   removeFriend: (id: string) => void;
-  /** Records a nudge to a friend (no-op persistence in the prototype). */
   nudge: (toId: string, habitName?: string) => void;
   markNudgesSeen: () => void;
 };
@@ -125,26 +186,59 @@ type SocialValue = {
 const SocialContext = createContext<SocialValue | null>(null);
 
 export function SocialProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  const userId = user?.id ?? null;
+  const live = isSupabaseConfigured && Boolean(userId);
+  const meId = live ? userId! : ME;
+
   const [ready, setReady] = useState(false);
   const [friends, setFriends] = useState<SocialUser[]>(FRIENDS);
   const [pool, setPool] = useState<SocialUser[]>(POOL);
   const [posts, setPosts] = useState<Post[]>(SEED_POSTS);
   const [reactions, setReactions] = useState<Reactions>(SEED_REACTIONS);
   const [nudges, setNudges] = useState<Nudge[]>(SEED_NUDGES);
+  const [incoming, setIncoming] = useState<FriendRequest[]>([]);
+  const [outgoing, setOutgoing] = useState<FriendRequest[]>([]);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
 
-  // Hydrate once.
+  // Latest values for use inside effects/callbacks without re-subscribing.
+  const userIdRef = useRef(userId);
+  const liveRef = useRef(live);
+  const friendsRef = useRef(friends);
+  const incomingRef = useRef(incoming);
+  const outgoingRef = useRef(outgoing);
+  const ownerRef = useRef(ownerId);
+  userIdRef.current = userId;
+  liveRef.current = live;
+  friendsRef.current = friends;
+  incomingRef.current = incoming;
+  outgoingRef.current = outgoing;
+  ownerRef.current = ownerId;
+
+  /** Best-effort remote write; failures keep local state and just warn in dev. */
+  const fireRemote = useCallback((run: () => Promise<void>) => {
+    if (!userIdRef.current || !isSupabaseConfigured) return;
+    run().catch((e) => {
+      if (__DEV__) console.warn('[social-sync]', e?.message ?? e);
+    });
+  }, []);
+
+  // Hydrate the local cache once.
   useEffect(() => {
     let alive = true;
     (async () => {
       try {
         const raw = await AsyncStorage.getItem(STORAGE_KEY);
         if (raw && alive) {
-          const data = JSON.parse(raw) as Partial<Persisted>;
+          const data = JSON.parse(raw) as Partial<Cached>;
           if (data.friends) setFriends(data.friends);
           if (data.pool) setPool(data.pool);
           if (data.posts) setPosts(data.posts);
           if (data.reactions) setReactions(data.reactions);
           if (data.nudges) setNudges(data.nudges);
+          if (data.incoming) setIncoming(data.incoming);
+          if (data.outgoing) setOutgoing(data.outgoing);
+          if (data.ownerId !== undefined) setOwnerId(data.ownerId);
         }
       } catch {
         // Corrupt/empty storage → fall back to seeds.
@@ -165,78 +259,181 @@ export function SocialProvider({ children }: { children: ReactNode }) {
       first.current = false;
       return;
     }
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ friends, pool, posts, reactions, nudges })).catch(() => {});
-  }, [ready, friends, pool, posts, reactions, nudges]);
+    const payload: Cached = { friends, pool, posts, reactions, nudges, incoming, outgoing, ownerId };
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(payload)).catch(() => {});
+  }, [ready, friends, pool, posts, reactions, nudges, incoming, outgoing, ownerId]);
+
+  // Reconcile with the backend on sign-in; reset to demo seeds on sign-out.
+  useEffect(() => {
+    if (!ready) return;
+
+    if (!live) {
+      // If the cache belonged to a real account, clear it back to demo seeds so
+      // a signed-out device never shows another user's data.
+      if (ownerRef.current) {
+        setFriends(FRIENDS);
+        setPool(POOL);
+        setPosts(SEED_POSTS);
+        setReactions(SEED_REACTIONS);
+        setNudges(SEED_NUDGES);
+        setIncoming([]);
+        setOutgoing([]);
+        setOwnerId(null);
+      }
+      return;
+    }
+
+    let alive = true;
+    (async () => {
+      try {
+        const snap = await pullSocial(userId!);
+        if (!alive) return;
+        setFriends(snap.friends);
+        setPool([]);
+        setPosts(snap.posts);
+        setReactions(snap.reactions);
+        setNudges(snap.nudges);
+        setIncoming(snap.incoming);
+        setOutgoing(snap.outgoing);
+        setOwnerId(userId!);
+      } catch (e) {
+        // Offline / transient — keep the cache and retry on the next sign-in.
+        if (__DEV__) console.warn('[social-sync] pull failed', (e as Error)?.message ?? e);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [ready, live, userId]);
 
   const userById = useCallback((id: string) => [...friends, ...pool].find((u) => u.id === id), [friends, pool]);
 
   const feedPosts = useMemo(() => {
-    const visible = new Set([ME, ...friends.map((f) => f.id)]);
+    const visible = new Set([meId, ...friends.map((f) => f.id)]);
     return posts.filter((p) => visible.has(p.authorId)).sort((a, b) => b.createdAt - a.createdAt);
-  }, [posts, friends]);
+  }, [posts, friends, meId]);
 
   const unseenNudges = useMemo(() => nudges.filter((n) => !n.seen), [nudges]);
 
-  const addPost = useCallback((post: NewPost) => {
-    setPosts((prev) => [{ ...post, id: uid('p'), authorId: ME, createdAt: Date.now() }, ...prev]);
+  const preparePhoto = useCallback(async (localUri: string): Promise<string> => {
+    if (liveRef.current && userIdRef.current) {
+      const url = await uploadPhoto(userIdRef.current, localUri);
+      if (url) return url;
+    }
+    return persistLocalPhoto(localUri);
   }, []);
 
+  const addPost = useCallback((post: NewPost) => {
+    const full: Post = { ...post, id: uuidv4(), authorId: liveRef.current ? userIdRef.current! : ME, createdAt: Date.now() };
+    setPosts((prev) => [full, ...prev]);
+    fireRemote(() => pushPost(userIdRef.current!, full));
+  }, [fireRemote]);
+
   const toggleReaction = useCallback((postId: string, emoji: string) => {
+    const me = liveRef.current ? userIdRef.current! : ME;
+    let willBeOn = false;
     setReactions((prev) => {
       const forPost = { ...(prev[postId] ?? {}) };
       const reactors = forPost[emoji] ?? [];
-      forPost[emoji] = reactors.includes(ME) ? reactors.filter((r) => r !== ME) : [...reactors, ME];
+      const has = reactors.includes(me);
+      willBeOn = !has;
+      forPost[emoji] = has ? reactors.filter((r) => r !== me) : [...reactors, me];
       if (forPost[emoji].length === 0) delete forPost[emoji];
       return { ...prev, [postId]: forPost };
     });
+    fireRemote(() => setReactionRemote(userIdRef.current!, postId, emoji, willBeOn));
+  }, [fireRemote]);
+
+  const searchUsers = useCallback(async (query: string): Promise<SocialUser[]> => {
+    if (!liveRef.current || !userIdRef.current) return [];
+    const results = await searchUsersRemote(userIdRef.current, query);
+    const exclude = new Set([
+      ...friendsRef.current.map((f) => f.id),
+      ...incomingRef.current.map((r) => r.user.id),
+      ...outgoingRef.current.map((r) => r.user.id),
+    ]);
+    return results.filter((u) => !exclude.has(u.id));
   }, []);
 
-  const addFriend = useCallback((id: string) => {
-    setPool((prevPool) => {
-      const user = prevPool.find((u) => u.id === id);
-      if (!user) return prevPool;
-      setFriends((prevFriends) => (prevFriends.some((f) => f.id === id) ? prevFriends : [...prevFriends, user]));
-      return prevPool.filter((u) => u.id !== id);
+  const requestFriend = useCallback((target: SocialUser) => {
+    if (!liveRef.current) {
+      // Demo: add immediately, moving from the suggested pool.
+      setPool((prev) => prev.filter((u) => u.id !== target.id));
+      setFriends((prev) => (prev.some((f) => f.id === target.id) ? prev : [...prev, target]));
+      return;
+    }
+    const tempId = uid('req');
+    setOutgoing((prev) => (prev.some((r) => r.user.id === target.id) ? prev : [...prev, { id: tempId, user: target }]));
+    fireRemote(async () => {
+      const realId = await sendRequest(userIdRef.current!, target.id);
+      setOutgoing((prev) => prev.map((r) => (r.id === tempId ? { id: realId, user: target } : r)));
     });
-  }, []);
+  }, [fireRemote]);
+
+  const acceptRequest = useCallback((req: FriendRequest) => {
+    setIncoming((prev) => prev.filter((r) => r.id !== req.id));
+    setFriends((prev) => (prev.some((f) => f.id === req.user.id) ? prev : [...prev, req.user]));
+    fireRemote(() => acceptRequestRemote(req.id));
+  }, [fireRemote]);
+
+  const removeRequest = useCallback((req: FriendRequest) => {
+    setIncoming((prev) => prev.filter((r) => r.id !== req.id));
+    setOutgoing((prev) => prev.filter((r) => r.id !== req.id));
+    fireRemote(() => deleteFriendship(userIdRef.current!, req.user.id));
+  }, [fireRemote]);
 
   const removeFriend = useCallback((id: string) => {
-    setFriends((prevFriends) => {
-      const user = prevFriends.find((u) => u.id === id);
-      if (!user) return prevFriends;
-      setPool((prevPool) => (prevPool.some((u) => u.id === id) ? prevPool : [...prevPool, user]));
-      return prevFriends.filter((f) => f.id !== id);
-    });
-  }, []);
+    if (!liveRef.current) {
+      // Demo: return them to the suggested pool.
+      setFriends((prevFriends) => {
+        const u = prevFriends.find((f) => f.id === id);
+        if (!u) return prevFriends;
+        setPool((prevPool) => (prevPool.some((x) => x.id === id) ? prevPool : [...prevPool, u]));
+        return prevFriends.filter((f) => f.id !== id);
+      });
+      return;
+    }
+    setFriends((prev) => prev.filter((f) => f.id !== id));
+    fireRemote(() => deleteFriendship(userIdRef.current!, id));
+  }, [fireRemote]);
 
-  const nudge = useCallback((_toId: string, _habitName?: string) => {
-    // Prototype: friends are demo accounts, so an outgoing nudge has nowhere to
-    // land. Kept as a real action so the backend version can POST a nudge.
-  }, []);
+  const nudge = useCallback((toId: string, habitName?: string) => {
+    // Demo friends are local accounts with nowhere to receive a nudge; no-op.
+    fireRemote(() => sendNudge(userIdRef.current!, toId, habitName));
+  }, [fireRemote]);
 
   const markNudgesSeen = useCallback(() => {
     setNudges((prev) => (prev.every((n) => n.seen) ? prev : prev.map((n) => ({ ...n, seen: true }))));
-  }, []);
+    fireRemote(() => markNudgesSeenRemote(userIdRef.current!));
+  }, [fireRemote]);
 
   const value = useMemo<SocialValue>(
     () => ({
       ready,
+      live,
+      meId,
       friends,
       pool,
       posts,
       reactions,
       nudges,
+      incoming,
+      outgoing,
       feedPosts,
       unseenNudges,
       userById,
+      preparePhoto,
       addPost,
       toggleReaction,
-      addFriend,
+      searchUsers,
+      requestFriend,
+      acceptRequest,
+      removeRequest,
       removeFriend,
       nudge,
       markNudgesSeen,
     }),
-    [ready, friends, pool, posts, reactions, nudges, feedPosts, unseenNudges, userById, addPost, toggleReaction, addFriend, removeFriend, nudge, markNudgesSeen],
+    [ready, live, meId, friends, pool, posts, reactions, nudges, incoming, outgoing, feedPosts, unseenNudges, userById, preparePhoto, addPost, toggleReaction, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge, markNudgesSeen],
   );
 
   return <SocialContext.Provider value={value}>{children}</SocialContext.Provider>;

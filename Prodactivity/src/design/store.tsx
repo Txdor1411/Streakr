@@ -34,7 +34,7 @@ export type HabitDef = {
   days: boolean[];
 };
 
-export type Profile = { name: string; emoji: string };
+export type Profile = { name: string; emoji: string; username?: string };
 
 /** habitId → (YYYY-MM-DD → amount logged that day). */
 export type Logs = Record<string, Record<string, number>>;

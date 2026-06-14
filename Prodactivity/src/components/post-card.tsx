@@ -18,7 +18,7 @@ type PostCardProps = {
 export function PostCard({ post, author, onNudge }: PostCardProps) {
   const theme = useTheme();
   const dark = theme.scheme === 'dark';
-  const { reactions, toggleReaction } = useSocial();
+  const { reactions, toggleReaction, meId } = useSocial();
   const accent = post.accent ?? author.accent;
   const postReactions = reactions[post.id] ?? {};
 
@@ -77,7 +77,7 @@ export function PostCard({ post, author, onNudge }: PostCardProps) {
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
         {REACTION_EMOJIS.map((emoji) => {
           const reactors = postReactions[emoji] ?? [];
-          const mine = reactors.includes('me');
+          const mine = reactors.includes(meId);
           const count = reactors.length;
           return (
             <Pressable

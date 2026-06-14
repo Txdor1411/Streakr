@@ -1,4 +1,3 @@
-import { Directory, File, Paths } from 'expo-file-system';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
@@ -13,26 +12,12 @@ import { computeStreak, todayKey, useStore } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { tint } from '@/design/tokens';
 
-/** Copy a picked image out of the cache into a persistent app directory. */
-function persistPhoto(srcUri: string): string {
-  try {
-    const dir = new Directory(Paths.document, 'posts');
-    if (!dir.exists) dir.create({ intermediates: true });
-    const ext = (srcUri.split('?')[0].split('.').pop() || 'jpg').toLowerCase();
-    const dest = new File(dir, `${Date.now()}_${Math.random().toString(36).slice(2, 7)}.${ext}`);
-    new File(srcUri).copy(dest);
-    return dest.uri;
-  } catch {
-    return srcUri; // fall back to the cache uri
-  }
-}
-
 export default function ComposeScreen() {
   const theme = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const dark = theme.scheme === 'dark';
-  const { addPost } = useSocial();
+  const { addPost, preparePhoto } = useSocial();
   const { habits, logFor, setAmount } = useStore();
 
   const [photoUri, setPhotoUri] = useState<string | null>(null);
@@ -40,6 +25,7 @@ export default function ComposeScreen() {
   const [caption, setCaption] = useState('');
   const [markDone, setMarkDone] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
 
   const sheetBg = dark ? '#16161e' : 'rgba(248,247,250,0.98)';
   const selected = habits.find((h) => h.id === selectedId) ?? null;
@@ -60,9 +46,10 @@ export default function ComposeScreen() {
     if (!res.canceled) setPhotoUri(res.assets[0].uri);
   };
 
-  const onShare = () => {
-    if (!photoUri) return;
-    const persisted = persistPhoto(photoUri);
+  const onShare = async () => {
+    if (!photoUri || sharing) return;
+    setSharing(true);
+    const persisted = await preparePhoto(photoUri);
     const text = caption.trim() || undefined;
 
     if (selected) {
@@ -189,10 +176,10 @@ export default function ComposeScreen() {
         {/* Share */}
         <Pressable
           onPress={onShare}
-          disabled={!photoUri}
-          style={{ height: 54, borderRadius: 18, backgroundColor: photoUri ? theme.accent : theme.fillStrong, alignItems: 'center', justifyContent: 'center', shadowColor: theme.accent, shadowOpacity: photoUri ? 0.5 : 0, shadowRadius: 14, shadowOffset: { width: 0, height: 10 } }}>
+          disabled={!photoUri || sharing}
+          style={{ height: 54, borderRadius: 18, backgroundColor: photoUri ? theme.accent : theme.fillStrong, alignItems: 'center', justifyContent: 'center', opacity: sharing ? 0.7 : 1, shadowColor: theme.accent, shadowOpacity: photoUri ? 0.5 : 0, shadowRadius: 14, shadowOffset: { width: 0, height: 10 } }}>
           <Display size={16} weight="600" color={photoUri ? '#fff' : theme.textMuted}>
-            Share proof
+            {sharing ? 'Sharing…' : 'Share proof'}
           </Display>
         </Pressable>
       </ScrollView>

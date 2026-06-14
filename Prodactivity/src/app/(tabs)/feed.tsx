@@ -7,7 +7,7 @@ import { CameraIcon, CloseIcon, UsersIcon } from '@/components/icons';
 import { PostCard } from '@/components/post-card';
 import { Screen } from '@/components/screen';
 import { Body, Display } from '@/components/text';
-import { ME, useSocial, type SocialUser } from '@/design/social';
+import { useSocial, type SocialUser } from '@/design/social';
 import { useStore } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
@@ -16,11 +16,11 @@ export default function FeedScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { profile } = useStore();
-  const { feedPosts, friends, unseenNudges, userById, nudge, markNudgesSeen } = useSocial();
+  const { feedPosts, friends, unseenNudges, userById, nudge, markNudgesSeen, meId } = useSocial();
   const [toast, setToast] = useState<string | null>(null);
 
-  const me: SocialUser = { id: ME, name: profile.name, emoji: profile.emoji, accent: theme.accent };
-  const authorFor = (id: string): SocialUser => (id === ME ? me : userById(id) ?? { id, name: 'Someone', emoji: '👤', accent: theme.accent });
+  const me: SocialUser = { id: meId, name: profile.name, emoji: profile.emoji, accent: theme.accent };
+  const authorFor = (id: string): SocialUser => (id === meId ? me : userById(id) ?? { id, name: 'Someone', emoji: '👤', accent: theme.accent });
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -94,7 +94,7 @@ export default function FeedScreen() {
           <View style={{ gap: 13, marginTop: 16 }}>
             {feedPosts.map((post) => {
               const author = authorFor(post.authorId);
-              return <PostCard key={post.id} post={post} author={author} onNudge={post.authorId === ME ? undefined : () => onNudge(author, post.habitName)} />;
+              return <PostCard key={post.id} post={post} author={author} onNudge={post.authorId === meId ? undefined : () => onNudge(author, post.habitName)} />;
             })}
           </View>
         )}

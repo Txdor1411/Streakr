@@ -19,12 +19,15 @@ export default function ProfileScreen() {
 
   const [name, setName] = useState(profile.name);
   const [emoji, setEmoji] = useState(profile.emoji);
+  const [username, setUsername] = useState(profile.username ?? '');
 
   const sheetBg = dark ? '#16161e' : 'rgba(248,247,250,0.98)';
   const trimmed = name.trim();
+  // Usernames are lowercase letters, numbers and underscores (used for @search).
+  const handle = username.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
 
   const save = () => {
-    setProfile({ name: trimmed || 'You', emoji });
+    setProfile({ name: trimmed || 'You', emoji, ...(handle ? { username: handle } : null) });
     router.back();
   };
 
@@ -71,6 +74,28 @@ export default function ProfileScreen() {
           maxLength={24}
           style={{ backgroundColor: theme.fill, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 13, fontFamily: 'Batica', fontSize: 16, fontWeight: '600', color: theme.textStrong, marginBottom: 20 }}
         />
+
+        <Body size={12} weight="600" muted style={{ marginBottom: 9, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          Username
+        </Body>
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: theme.fill, borderRadius: 14, paddingHorizontal: 14, marginBottom: 6 }}>
+          <Body size={16} weight="600" color={theme.textMuted}>
+            @
+          </Body>
+          <TextInput
+            value={username}
+            onChangeText={setUsername}
+            placeholder="username"
+            placeholderTextColor={theme.textMuted}
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={20}
+            style={{ flex: 1, paddingVertical: 13, paddingLeft: 2, fontFamily: 'Batica', fontSize: 16, fontWeight: '600', color: theme.textStrong }}
+          />
+        </View>
+        <Body size={11.5} muted style={{ marginBottom: 20 }}>
+          How friends find you. Lowercase letters, numbers and underscores.
+        </Body>
 
         <Body size={12} weight="600" muted style={{ marginBottom: 11, textTransform: 'uppercase', letterSpacing: 0.5 }}>
           Avatar
