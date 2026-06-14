@@ -7,6 +7,7 @@ import { Glass } from '@/components/glass';
 import { Screen } from '@/components/screen';
 import { Segmented } from '@/components/segmented';
 import { Body, Display } from '@/components/text';
+import { useAuth } from '@/design/auth';
 import { useStore } from '@/design/store';
 import { useTheme, useThemePref } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
@@ -53,7 +54,15 @@ export default function SettingsScreen() {
   const router = useRouter();
   const { pref, setPref } = useThemePref();
   const { profile } = useStore();
+  const { configured, session, user, signOut } = useAuth();
   const [reminders, setReminders] = useState(true);
+
+  const signedIn = Boolean(session);
+  const accountSub = !configured
+    ? 'Local-first · no account needed'
+    : signedIn
+      ? `Synced · ${user?.email ?? 'signed in'}`
+      : 'Local-first · sign in to sync';
 
   return (
     <Screen>
@@ -80,7 +89,7 @@ export default function SettingsScreen() {
               {profile.name}
             </Display>
             <Body size={12} secondary style={{ marginTop: 4 }}>
-              Local-first · no account needed
+              {accountSub}
             </Body>
           </View>
           <View style={{ paddingHorizontal: 13, paddingVertical: 7, borderRadius: 11, backgroundColor: theme.fillStrong }}>
@@ -90,6 +99,26 @@ export default function SettingsScreen() {
           </View>
         </Glass>
       </Pressable>
+
+      {/* Account / sync */}
+      {configured && (
+        <Pressable onPress={() => (signedIn ? signOut() : router.push('/auth'))}>
+          <Glass radius={22} style={{ flexDirection: 'row', alignItems: 'center', gap: 11, padding: 14, marginTop: 14 }}>
+            <IconTile emoji={signedIn ? '☁️' : '🔑'} color={Palette.water} />
+            <View style={{ flex: 1 }}>
+              <Body size={14.5} weight="500">
+                {signedIn ? 'Sign out' : 'Sign in to sync'}
+              </Body>
+              <Body size={12} secondary style={{ marginTop: 3 }}>
+                {signedIn ? 'Your habits back up across devices' : 'Back up and sync across devices'}
+              </Body>
+            </View>
+            <Body size={13.5} weight="500" color={signedIn ? Palette.coral : theme.accent}>
+              {signedIn ? 'Sign out' : 'Sign in'} ›
+            </Body>
+          </Glass>
+        </Pressable>
+      )}
 
       {/* Theme + week start */}
       <Glass radius={22} style={{ marginTop: 14, overflow: 'hidden' }}>

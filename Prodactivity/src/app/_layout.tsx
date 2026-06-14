@@ -3,6 +3,7 @@ import { Stack } from 'expo-router/stack';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { AuthProvider } from '@/design/auth';
 import { ThemeProvider } from '@/design/theme';
 import { StoreProvider, useStore } from '@/design/store';
 import { SocialProvider } from '@/design/social';
@@ -24,6 +25,7 @@ function Navigator() {
       <Stack.Screen name="import" options={{ presentation: 'modal' }} />
       <Stack.Screen name="compose" options={{ presentation: 'modal' }} />
       <Stack.Screen name="friends" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="auth" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }
@@ -38,12 +40,14 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
-        <StoreProvider>
-          <SocialProvider>
-            <StatusBar style="auto" />
-            <Navigator />
-          </SocialProvider>
-        </StoreProvider>
+        <AuthProvider>
+          <StoreProvider>
+            <SocialProvider>
+              <StatusBar style="auto" />
+              <Navigator />
+            </SocialProvider>
+          </StoreProvider>
+        </AuthProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
