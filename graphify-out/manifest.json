@@ -1,0 +1,422 @@
+{
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\.claude\\settings.json": {
+    "mtime": 1781548811.9022987,
+    "ast_hash": "7bf81dca0376bde3a32244b82bc7cbc0",
+    "semantic_hash": "7bf81dca0376bde3a32244b82bc7cbc0"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.claude\\settings.json": {
+    "mtime": 1781262659.0962353,
+    "ast_hash": "dc580fca35a0e98ed20777ede5e545a1",
+    "semantic_hash": "dc580fca35a0e98ed20777ede5e545a1"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.expo\\devices.json": {
+    "mtime": 1781339283.4270487,
+    "ast_hash": "e5f6eb13c875f326cfd5915d3364614f",
+    "semantic_hash": "e5f6eb13c875f326cfd5915d3364614f"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.expo\\types\\router.d.ts": {
+    "mtime": 1781521555.5108185,
+    "ast_hash": "7351ead258cfd908a57fea7bb599f0e9",
+    "semantic_hash": "7351ead258cfd908a57fea7bb599f0e9"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.vscode\\extensions.json": {
+    "mtime": 1781262599.7397194,
+    "ast_hash": "b2354ba0225f5689d13651ec0fac0de0",
+    "semantic_hash": "b2354ba0225f5689d13651ec0fac0de0"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.vscode\\settings.json": {
+    "mtime": 1781262599.7447183,
+    "ast_hash": "6b9302c1f72c315e90233c7539c48c9f",
+    "semantic_hash": "6b9302c1f72c315e90233c7539c48c9f"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\app.json": {
+    "mtime": 1781359060.7059731,
+    "ast_hash": "c1b780d04b870d65d163ad032c74aa0f",
+    "semantic_hash": "c1b780d04b870d65d163ad032c74aa0f"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\expo.icon\\icon.json": {
+    "mtime": 1781262599.741718,
+    "ast_hash": "35cb915a0bebbebbe69cf7815e174462",
+    "semantic_hash": "35cb915a0bebbebbe69cf7815e174462"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\eslint.config.js": {
+    "mtime": 1781473259.6840732,
+    "ast_hash": "b713dd66aa3ad59ed5098d7b9f8dc202",
+    "semantic_hash": "b713dd66aa3ad59ed5098d7b9f8dc202"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\expo-env.d.ts": {
+    "mtime": 1781521554.4497304,
+    "ast_hash": "0dd9dccdb4b08595bc83df70d6a154d3",
+    "semantic_hash": "0dd9dccdb4b08595bc83df70d6a154d3"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\package.json": {
+    "mtime": 1781473246.2821293,
+    "ast_hash": "7c600946d10098867da3dd2b438d5ec0",
+    "semantic_hash": "7c600946d10098867da3dd2b438d5ec0"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\scripts\\reset-project.js": {
+    "mtime": 1781262599.735176,
+    "ast_hash": "ca9d75cf60f51e7a2d67fd08ddfb8275",
+    "semantic_hash": "ca9d75cf60f51e7a2d67fd08ddfb8275"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\_layout.tsx": {
+    "mtime": 1781347312.2365775,
+    "ast_hash": "b8e01cb5522262268e5c620e2201aa2e",
+    "semantic_hash": "b8e01cb5522262268e5c620e2201aa2e"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\feed.tsx": {
+    "mtime": 1781474696.9154265,
+    "ast_hash": "92323b23e46c8b46329f7daac4f82332",
+    "semantic_hash": "92323b23e46c8b46329f7daac4f82332"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\goals.tsx": {
+    "mtime": 1781281358.7592597,
+    "ast_hash": "fcd64e59fb812f3b6e83100f4c7d1492",
+    "semantic_hash": "fcd64e59fb812f3b6e83100f4c7d1492"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\habits.tsx": {
+    "mtime": 1781343076.8865118,
+    "ast_hash": "118ed4faa20879e8f3a07a72ab07c711",
+    "semantic_hash": "118ed4faa20879e8f3a07a72ab07c711"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\index.tsx": {
+    "mtime": 1781475379.6033895,
+    "ast_hash": "ef394f41e4b6ed2804c96e602e13650a",
+    "semantic_hash": "ef394f41e4b6ed2804c96e602e13650a"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\insights.tsx": {
+    "mtime": 1781344555.3804173,
+    "ast_hash": "4df5762b638c6bec0e1303cac9ea7309",
+    "semantic_hash": "4df5762b638c6bec0e1303cac9ea7309"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\(tabs)\\settings.tsx": {
+    "mtime": 1781475365.6521895,
+    "ast_hash": "e635d6cb9af2a12f29d04ba3ad8bfcaf",
+    "semantic_hash": "e635d6cb9af2a12f29d04ba3ad8bfcaf"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\_layout.tsx": {
+    "mtime": 1781474394.5118775,
+    "ast_hash": "d0c3e6b712aed0c7136a8d57da849718",
+    "semantic_hash": "d0c3e6b712aed0c7136a8d57da849718"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\auth.tsx": {
+    "mtime": 1781518173.2240465,
+    "ast_hash": "938da4740a0800086e8d0129213873f2",
+    "semantic_hash": "938da4740a0800086e8d0129213873f2"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\compose.tsx": {
+    "mtime": 1781473108.786229,
+    "ast_hash": "131cf88766c10ce23f8cdda1c111803a",
+    "semantic_hash": "131cf88766c10ce23f8cdda1c111803a"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\create.tsx": {
+    "mtime": 1781344860.3101623,
+    "ast_hash": "f9b61adf1203bd24ddfaee8b3f1460dd",
+    "semantic_hash": "f9b61adf1203bd24ddfaee8b3f1460dd"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\friends.tsx": {
+    "mtime": 1781473172.9814055,
+    "ast_hash": "aeb5aa03e7559657c147318d12ca6f89",
+    "semantic_hash": "aeb5aa03e7559657c147318d12ca6f89"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\habit\\[id].tsx": {
+    "mtime": 1781345483.9701056,
+    "ast_hash": "1261f614030f8af2e0ab7ec4c4970427",
+    "semantic_hash": "1261f614030f8af2e0ab7ec4c4970427"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\import.tsx": {
+    "mtime": 1781281550.5134077,
+    "ast_hash": "3fa3288db452bb6234f2a85ae6f9759c",
+    "semantic_hash": "3fa3288db452bb6234f2a85ae6f9759c"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\onboarding.tsx": {
+    "mtime": 1781475408.0905652,
+    "ast_hash": "dc1b4176093439f787e128943b43dc36",
+    "semantic_hash": "dc1b4176093439f787e128943b43dc36"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\app\\profile.tsx": {
+    "mtime": 1781473211.8444564,
+    "ast_hash": "478d2a9766b80748afb77fdd81f31b4b",
+    "semantic_hash": "478d2a9766b80748afb77fdd81f31b4b"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\confetti.tsx": {
+    "mtime": 1781281020.225602,
+    "ast_hash": "916654681069fae495f561635f2cdf6c",
+    "semantic_hash": "916654681069fae495f561635f2cdf6c"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\floating-tab-bar.tsx": {
+    "mtime": 1781347328.676767,
+    "ast_hash": "d9000d3788515e4bcb9202cfe3d4ab48",
+    "semantic_hash": "d9000d3788515e4bcb9202cfe3d4ab48"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\glass.tsx": {
+    "mtime": 1781280917.6791203,
+    "ast_hash": "33b62a04732c50e45a903b3a6909dbfa",
+    "semantic_hash": "33b62a04732c50e45a903b3a6909dbfa"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\habit-card.tsx": {
+    "mtime": 1781281259.3255749,
+    "ast_hash": "d1ca0226348bc3379743a0ba47919acb",
+    "semantic_hash": "d1ca0226348bc3379743a0ba47919acb"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\heatmap.tsx": {
+    "mtime": 1781280982.607241,
+    "ast_hash": "3846d5579bbf510b156bbc3e1240516b",
+    "semantic_hash": "3846d5579bbf510b156bbc3e1240516b"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\icons.tsx": {
+    "mtime": 1781474787.3623853,
+    "ast_hash": "d865d342b9964be9cfe9e9969f9ee687",
+    "semantic_hash": "d865d342b9964be9cfe9e9969f9ee687"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\post-card.tsx": {
+    "mtime": 1781473063.244227,
+    "ast_hash": "6545a820d308bf16a39543969b04b0e2",
+    "semantic_hash": "6545a820d308bf16a39543969b04b0e2"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\progress-ring.tsx": {
+    "mtime": 1781280996.4146178,
+    "ast_hash": "285eaaccf7462612f616e10441dbf6ef",
+    "semantic_hash": "285eaaccf7462612f616e10441dbf6ef"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\screen.tsx": {
+    "mtime": 1781281219.7315729,
+    "ast_hash": "59c225758396511aed4fa1781251eaff",
+    "semantic_hash": "59c225758396511aed4fa1781251eaff"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\segmented.tsx": {
+    "mtime": 1781281323.0622323,
+    "ast_hash": "08ae7c2bc56dc61c995c27122bccce11",
+    "semantic_hash": "08ae7c2bc56dc61c995c27122bccce11"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\streak-flame.tsx": {
+    "mtime": 1781281008.589732,
+    "ast_hash": "93004c55eff5d3aa1e443108eb2dcbf0",
+    "semantic_hash": "93004c55eff5d3aa1e443108eb2dcbf0"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\text.tsx": {
+    "mtime": 1781280932.394236,
+    "ast_hash": "e17f2eee8a10be08c8fc87d0eb52c122",
+    "semantic_hash": "e17f2eee8a10be08c8fc87d0eb52c122"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\components\\wallpaper.tsx": {
+    "mtime": 1781280901.2265985,
+    "ast_hash": "1540b38b77d39a2ff1389d75d92e06a5",
+    "semantic_hash": "1540b38b77d39a2ff1389d75d92e06a5"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\auth.tsx": {
+    "mtime": 1781357309.0140872,
+    "ast_hash": "bbb76bbf7f715f94d050335942d1bfec",
+    "semantic_hash": "bbb76bbf7f715f94d050335942d1bfec"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\data.ts": {
+    "mtime": 1781280884.357664,
+    "ast_hash": "6bce9738788bc8f3ed01aae98ae6f298",
+    "semantic_hash": "6bce9738788bc8f3ed01aae98ae6f298"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\onboarding.tsx": {
+    "mtime": 1781474270.7601597,
+    "ast_hash": "568a4017648bc424ec3ccc9fa176dfc2",
+    "semantic_hash": "568a4017648bc424ec3ccc9fa176dfc2"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\social-sync.ts": {
+    "mtime": 1781472772.8818011,
+    "ast_hash": "df739fd5b12b223691f42fd9c522b977",
+    "semantic_hash": "df739fd5b12b223691f42fd9c522b977"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\social.tsx": {
+    "mtime": 1781475752.7487724,
+    "ast_hash": "b698f8de33ab78603a6a9676f287df2c",
+    "semantic_hash": "b698f8de33ab78603a6a9676f287df2c"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\store.tsx": {
+    "mtime": 1781475353.0976365,
+    "ast_hash": "18d27e178c76b6ad54f7bd877b1ac477",
+    "semantic_hash": "18d27e178c76b6ad54f7bd877b1ac477"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\sync.ts": {
+    "mtime": 1781473189.4706662,
+    "ast_hash": "a90d2f806cb9e55577dece7cce477bd4",
+    "semantic_hash": "a90d2f806cb9e55577dece7cce477bd4"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\design\\theme.tsx": {
+    "mtime": 1781280867.7758176,
+    "ast_hash": "28050513ac5ceaac67c41941a868a7c0",
+    "semantic_hash": "28050513ac5ceaac67c41941a868a7c0"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\src\\lib\\supabase.ts": {
+    "mtime": 1781350291.3776708,
+    "ast_hash": "98c788f891e99156e2b64dc4f13d9eca",
+    "semantic_hash": "98c788f891e99156e2b64dc4f13d9eca"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\supabase\\migrations\\0001_init.sql": {
+    "mtime": 1781472024.1025898,
+    "ast_hash": "8caa9e6d47825f5dff830306525abfa2",
+    "semantic_hash": "8caa9e6d47825f5dff830306525abfa2"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\supabase\\migrations\\0002_social.sql": {
+    "mtime": 1781474439.9709194,
+    "ast_hash": "6d4c2868df43d1dbdc3faa75fbfb5a7b",
+    "semantic_hash": "6d4c2868df43d1dbdc3faa75fbfb5a7b"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\tsconfig.json": {
+    "mtime": 1781262599.7467215,
+    "ast_hash": "6794be22dd9dd00003515895d3b4ff06",
+    "semantic_hash": "6794be22dd9dd00003515895d3b4ff06"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\CLAUDE.md": {
+    "mtime": 1781548521.6800654,
+    "ast_hash": "8a6643a420fdad6bfb583523bc6cef16",
+    "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.expo\\README.md": {
+    "mtime": 1781339283.3694634,
+    "ast_hash": "a7c2b7fea86b2a2559e471f999e478f1",
+    "semantic_hash": "a7c2b7fea86b2a2559e471f999e478f1"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\AGENTS.md": {
+    "mtime": 1781262659.0898488,
+    "ast_hash": "0168b78417bf60f34fd1233c69591023",
+    "semantic_hash": "0168b78417bf60f34fd1233c69591023"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\CLAUDE.md": {
+    "mtime": 1781262659.0918489,
+    "ast_hash": "5c27369b226fcf2be8a6cfe52224e767",
+    "semantic_hash": "5c27369b226fcf2be8a6cfe52224e767"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\README.md": {
+    "mtime": 1781262599.747718,
+    "ast_hash": "db37e01139db6cec80a338779325d5ae",
+    "semantic_hash": "db37e01139db6cec80a338779325d5ae"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\supabase\\README.md": {
+    "mtime": 1781472575.8173041,
+    "ast_hash": "4fe25dfd0af60d67d418dd05e029cac3",
+    "semantic_hash": "4fe25dfd0af60d67d418dd05e029cac3"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\memory\\MEMORY.md": {
+    "mtime": 1781344211.255799,
+    "ast_hash": "a5e484de6c9fc93c7c2795ac6cc9c1eb",
+    "semantic_hash": "a5e484de6c9fc93c7c2795ac6cc9c1eb"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\memory\\expo-sdk-55-pin.md": {
+    "mtime": 1781344210.1412306,
+    "ast_hash": "cbb011a7cef48a16afebb27c3fbb3a31",
+    "semantic_hash": "cbb011a7cef48a16afebb27c3fbb3a31"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\.expo\\web\\cache\\production\\images\\favicon\\favicon-a4e030697a7571b3e95d31860e4da55d2f98e5e861e2b55e414f45a8556828ba-contain-transparent\\favicon-48.png": {
+    "mtime": 1781341816.1933198,
+    "ast_hash": "20a9fe6c2469bd28db1c1baab735ceb4",
+    "semantic_hash": "20a9fe6c2469bd28db1c1baab735ceb4"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\expo.icon\\Assets\\expo-symbol 2.svg": {
+    "mtime": 1781262599.7882411,
+    "ast_hash": "6979b664c1ce82c10426a051082412a7",
+    "semantic_hash": "6979b664c1ce82c10426a051082412a7"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\expo.icon\\Assets\\grid.png": {
+    "mtime": 1781262599.765229,
+    "ast_hash": "37cdeda9d1af5d7432716d9671b098da",
+    "semantic_hash": "37cdeda9d1af5d7432716d9671b098da"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\android-icon-background.png": {
+    "mtime": 1781262599.7502384,
+    "ast_hash": "2d65569cc0e2afdcea0af9f9902d4173",
+    "semantic_hash": "2d65569cc0e2afdcea0af9f9902d4173"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\android-icon-foreground.png": {
+    "mtime": 1781262599.7532601,
+    "ast_hash": "72e71a9c846c6aa4ae32476641a00e18",
+    "semantic_hash": "72e71a9c846c6aa4ae32476641a00e18"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\android-icon-monochrome.png": {
+    "mtime": 1781262599.754281,
+    "ast_hash": "1e097dab989759fc0b69440092ca22cd",
+    "semantic_hash": "1e097dab989759fc0b69440092ca22cd"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\expo-badge-white.png": {
+    "mtime": 1781262599.7602618,
+    "ast_hash": "02efb8472f161bcf8afc8c8489a28fca",
+    "semantic_hash": "02efb8472f161bcf8afc8c8489a28fca"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\expo-badge.png": {
+    "mtime": 1781262599.7612567,
+    "ast_hash": "6b0da8ec880685d1bd053c0f5ea9d09d",
+    "semantic_hash": "6b0da8ec880685d1bd053c0f5ea9d09d"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\expo-logo.png": {
+    "mtime": 1781262599.762262,
+    "ast_hash": "5ee5db91d59518c45ebcc99a2f5afc57",
+    "semantic_hash": "5ee5db91d59518c45ebcc99a2f5afc57"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\favicon.png": {
+    "mtime": 1781262599.763262,
+    "ast_hash": "d9f444efbdfbe7931aa93beada07318a",
+    "semantic_hash": "d9f444efbdfbe7931aa93beada07318a"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\icon.png": {
+    "mtime": 1781262599.775274,
+    "ast_hash": "8d892ef03dbd43e8d899c1d605ad42df",
+    "semantic_hash": "8d892ef03dbd43e8d899c1d605ad42df"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\logo-glow.png": {
+    "mtime": 1781262599.7802246,
+    "ast_hash": "dbca075a49dc45e550c5d2e3e9601039",
+    "semantic_hash": "dbca075a49dc45e550c5d2e3e9601039"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\react-logo.png": {
+    "mtime": 1781262599.7812226,
+    "ast_hash": "695d5a1c6f29a689130f3aaa573aec6e",
+    "semantic_hash": "695d5a1c6f29a689130f3aaa573aec6e"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\react-logo@2x.png": {
+    "mtime": 1781262599.782225,
+    "ast_hash": "b507e7f2c91ebc8fe24dee79ccb3b600",
+    "semantic_hash": "b507e7f2c91ebc8fe24dee79ccb3b600"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\react-logo@3x.png": {
+    "mtime": 1781262599.7842524,
+    "ast_hash": "8a4d0e5b845044e56e3b2df627d01cfd",
+    "semantic_hash": "8a4d0e5b845044e56e3b2df627d01cfd"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\splash-icon.png": {
+    "mtime": 1781262599.7852519,
+    "ast_hash": "5ee5db91d59518c45ebcc99a2f5afc57",
+    "semantic_hash": "5ee5db91d59518c45ebcc99a2f5afc57"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tabIcons\\explore.png": {
+    "mtime": 1781262599.755281,
+    "ast_hash": "8409922f7d5c981001e3c9b25e4bfae5",
+    "semantic_hash": "8409922f7d5c981001e3c9b25e4bfae5"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tabIcons\\explore@2x.png": {
+    "mtime": 1781262599.7571523,
+    "ast_hash": "dd40200ba8e8d98061578292d6b73791",
+    "semantic_hash": "dd40200ba8e8d98061578292d6b73791"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tabIcons\\explore@3x.png": {
+    "mtime": 1781262599.759262,
+    "ast_hash": "c4278d79298bb11a8b0e68ed3e40da9e",
+    "semantic_hash": "c4278d79298bb11a8b0e68ed3e40da9e"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tabIcons\\home.png": {
+    "mtime": 1781262599.767166,
+    "ast_hash": "eeb5de2ac12ace75b31dfda235208956",
+    "semantic_hash": "eeb5de2ac12ace75b31dfda235208956"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tabIcons\\home@2x.png": {
+    "mtime": 1781262599.76828,
+    "ast_hash": "456346cfb0b82cc0f39e921e05d082d9",
+    "semantic_hash": "456346cfb0b82cc0f39e921e05d082d9"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tabIcons\\home@3x.png": {
+    "mtime": 1781262599.769245,
+    "ast_hash": "5d86e963002b3664ab81c128c838559d",
+    "semantic_hash": "5d86e963002b3664ab81c128c838559d"
+  },
+  "C:\\Users\\tudor\\Documents\\GitHub\\Prodactivity\\Prodactivity\\assets\\images\\tutorial-web.png": {
+    "mtime": 1781262599.78716,
+    "ast_hash": "c62d22797f3002396754d8cc55b0ae1a",
+    "semantic_hash": "c62d22797f3002396754d8cc55b0ae1a"
+  }
+}
