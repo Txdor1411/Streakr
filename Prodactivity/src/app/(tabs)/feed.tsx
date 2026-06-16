@@ -20,6 +20,7 @@ export default function FeedScreen() {
   const { profile } = useStore();
   const { live, feedPosts, friends, unseenNudges, userById, nudge, markNudgesSeen, meId } = useSocial();
   const [toast, setToast] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const dark = theme.scheme === 'dark';
 
@@ -132,14 +133,29 @@ export default function FeedScreen() {
               {friends.length === 0 ? 'Add a few friends, then post proof to keep each other on track.' : 'Be the first — tap the camera to post proof of a habit.'}
             </Body>
           </Glass>
-        ) : (
-          <View style={{ gap: 13, marginTop: 16 }}>
-            {feedPosts.map((post) => {
-              const author = authorFor(post.authorId);
-              return <PostCard key={post.id} post={post} author={author} onNudge={post.authorId === meId ? undefined : () => onNudge(author, post.habitName)} />;
-            })}
-          </View>
-        )}
+        ) : (() => {
+          const LIMIT = 10;
+          const hasMore = feedPosts.length > LIMIT;
+          const visible = showAll ? feedPosts : feedPosts.slice(0, LIMIT);
+          const hidden = feedPosts.length - LIMIT;
+          return (
+            <View style={{ gap: 13, marginTop: 16 }}>
+              {visible.map((post) => {
+                const author = authorFor(post.authorId);
+                return <PostCard key={post.id} post={post} author={author} onNudge={post.authorId === meId ? undefined : () => onNudge(author, post.habitName)} />;
+              })}
+              {hasMore && !showAll && (
+                <Pressable
+                  onPress={() => setShowAll(true)}
+                  style={{ paddingVertical: 14, alignItems: 'center', borderRadius: 16, backgroundColor: theme.fill }}>
+                  <Body size={13.5} weight="600" color={theme.accent}>
+                    Show {hidden} older post{hidden === 1 ? '' : 's'}
+                  </Body>
+                </Pressable>
+              )}
+            </View>
+          );
+        })()}
       </Screen>
 
       {/* Toast */}

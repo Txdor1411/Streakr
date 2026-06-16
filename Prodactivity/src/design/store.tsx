@@ -1,20 +1,27 @@
 /**
  * App data layer — real, persisted habit tracking.
  *
- * Everything the UI used to fake (habit list, today's progress, streaks,
- * the profile) lives here, backed by AsyncStorage so it survives reloads.
- *
- * When a Supabase account is signed in, the same state syncs to the backend:
- * the local cache is the optimistic source of truth, and mutations push to the
- * server best-effort. On first sign-in we either adopt the account's remote
- * data or migrate the on-device data up to it (see the sync effect below).
+ * AsyncStorage is the source of truth. Mutations write locally first, then
+ * push to Supabase. If the push fails (offline), the operation is appended
+ * to a persistent pending queue and replayed the next time the app comes to
+ * the foreground. On sign-in, local state is merged with the server snapshot
+ * (local wins per entry) so no offline work is ever lost.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { AppState } from 'react-native';
 
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useAuth } from './auth';
-import { deleteHabit, migrateLocalToRemote, pullAll, pushHabit, pushLog, pushProfile, uuidv4 } from './sync';
+import {
+  drainQueue,
+  pullAll,
+  reconcileAndPush,
+  replayOp,
+  savePending,
+  uuidv4,
+  type PendingOp,
+} from './sync';
 import { Palette } from './tokens';
 
 export type HabitType = 'count' | 'timer' | 'done';
@@ -34,7 +41,7 @@ export type HabitDef = {
   days: boolean[];
 };
 
-export type Profile = { name: string; emoji: string; username?: string };
+export type Profile = { name: string; emoji: string; username?: string; avatar_url?: string };
 
 /** habitId → (YYYY-MM-DD → amount logged that day). */
 export type Logs = Record<string, Record<string, number>>;
@@ -152,7 +159,7 @@ export function computeBestStreak(habit: HabitDef, log: Record<string, number> =
 
 type StoreValue = {
   ready: boolean;
-  /** True while an initial pull/migration with the backend is in flight. */
+  /** True while an initial pull/merge with the backend is in flight. */
   syncing: boolean;
   habits: HabitDef[];
   profile: Profile;
@@ -201,11 +208,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   ownerRef.current = ownerId;
   userIdRef.current = userId;
 
-  /** Best-effort remote write; failures keep local state and just warn in dev. */
-  const fireRemote = useCallback((run: () => Promise<void>) => {
-    if (!userIdRef.current || !isSupabaseConfigured) return;
-    run().catch((e) => {
-      if (__DEV__) console.warn('[sync]', e?.message ?? e);
+  /**
+   * Fire-and-queue: try to execute the op remotely; if it fails (offline or
+   * transient error), save it to the pending queue for the next drain.
+   */
+  const fireRemote = useCallback((op: PendingOp) => {
+    const uid = userIdRef.current;
+    if (!uid || !isSupabaseConfigured) return;
+    replayOp(uid, op).catch(() => {
+      savePending(op).catch(() => {});
     });
   }, []);
 
@@ -245,6 +256,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ habits, logs, profile, freezes, ownerId } satisfies Cached)).catch(() => {});
   }, [ready, habits, logs, profile, freezes, ownerId]);
 
+  // Drain the pending queue whenever the app comes back to the foreground.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active' && userIdRef.current && isSupabaseConfigured) {
+        drainQueue(userIdRef.current).catch(() => {});
+      }
+    });
+    return () => sub.remove();
+  }, []);
+
   // Reconcile with the backend whenever a user signs in.
   useEffect(() => {
     if (!ready || !userId || !isSupabaseConfigured) return;
@@ -252,30 +273,35 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setSyncing(true);
     (async () => {
       try {
+        // Flush any queued offline writes before pulling the server snapshot.
+        await drainQueue(userId);
+        if (!alive) return;
+
         const remote = await pullAll(userId);
         if (!alive) return;
 
-        if (remote.habits.length > 0 || remote.profile) {
-          // Account already has data → it wins; adopt it as the new local cache.
+        if (ownerRef.current !== null && ownerRef.current !== userId) {
+          // Different user on this device → their server data wins, start clean.
           if (remote.habits.length) setHabits(remote.habits);
           setLogs(remote.logs);
           if (remote.profile) setProfileState({ ...SEED_PROFILE, ...remote.profile });
-        } else if (ownerRef.current === null || ownerRef.current === userId) {
-          // Fresh account + cache is unsynced (or already ours) → migrate it up.
-          const migrated = await migrateLocalToRemote(userId, habitsRef.current, logsRef.current, profileRef.current);
-          if (!alive) return;
-          setHabits(migrated.habits);
-          setLogs(migrated.logs);
         } else {
-          // Fresh account but the cache belongs to a different user → start clean.
-          setHabits(SEED_HABITS);
-          setLogs({});
-          setProfileState(SEED_PROFILE);
+          // Same user or first login → merge local (wins) + remote, push result.
+          const merged = await reconcileAndPush(
+            userId,
+            habitsRef.current,
+            logsRef.current,
+            profileRef.current,
+            remote,
+          );
+          if (!alive) return;
+          setHabits(merged.habits);
+          setLogs(merged.logs);
         }
+
         if (alive) setOwnerId(userId);
       } catch (e) {
-        // Offline / transient — keep using the local cache and retry next sign-in.
-        if (__DEV__) console.warn('[sync] pull failed', (e as Error)?.message ?? e);
+        if (__DEV__) console.warn('[sync] reconcile failed', (e as Error)?.message ?? e);
       } finally {
         if (alive) setSyncing(false);
       }
@@ -305,7 +331,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         else habitLog[day] = amount;
         return { ...prev, [id]: habitLog };
       });
-      fireRemote(() => pushLog(userIdRef.current!, id, day, amount));
+      fireRemote({ type: 'log', habitId: id, day, amount });
     },
     [fireRemote],
   );
@@ -330,7 +356,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const id = uuidv4();
       const habit = { ...def, id };
       setHabits((prev) => {
-        fireRemote(() => pushHabit(userIdRef.current!, habit, prev.length));
+        fireRemote({ type: 'habit', def: habit, position: prev.length });
         return [...prev, habit];
       });
       return id;
@@ -344,7 +370,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const index = prev.findIndex((h) => h.id === id);
         if (index === -1) return prev;
         const next = { ...prev[index], ...patch };
-        fireRemote(() => pushHabit(userIdRef.current!, next, index));
+        fireRemote({ type: 'habit', def: next, position: index });
         return prev.map((h) => (h.id === id ? next : h));
       });
     },
@@ -359,7 +385,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         delete next[id];
         return next;
       });
-      fireRemote(() => deleteHabit(id));
+      fireRemote({ type: 'deleteHabit', id });
     },
     [fireRemote],
   );
@@ -368,7 +394,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     (patch: Partial<Profile>) => {
       setProfileState((prev) => {
         const next = { ...prev, ...patch };
-        fireRemote(() => pushProfile(userIdRef.current!, next));
+        fireRemote({ type: 'profile', profile: next });
         return next;
       });
     },
@@ -377,21 +403,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const replaceAll = useCallback(
     (data: Persisted) => {
-      const habits = data.habits ?? SEED_HABITS;
-      const logs = data.logs ?? {};
-      const profile = { ...SEED_PROFILE, ...(data.profile ?? {}) };
-      setHabits(habits);
-      setLogs(logs);
-      setProfileState(profile);
+      const nextHabits = data.habits ?? SEED_HABITS;
+      const nextLogs = data.logs ?? {};
+      const nextProfile = { ...SEED_PROFILE, ...(data.profile ?? {}) };
+      setHabits(nextHabits);
+      setLogs(nextLogs);
+      setProfileState(nextProfile);
       setFreezes(typeof data.freezes === 'number' ? data.freezes : MAX_FREEZES);
-      // Push the imported data up so the account reflects it too.
-      fireRemote(async () => {
-        const migrated = await migrateLocalToRemote(userIdRef.current!, habits, logs, profile);
-        setHabits(migrated.habits);
-        setLogs(migrated.logs);
-      });
+      const uid = userIdRef.current;
+      if (uid && isSupabaseConfigured) {
+        // Imported data becomes canonical — push it with an empty remote baseline.
+        reconcileAndPush(uid, nextHabits, nextLogs, nextProfile, { habits: [], logs: {}, profile: null })
+          .then(({ habits: h, logs: l }) => {
+            setHabits(h);
+            setLogs(l);
+          })
+          .catch(() => {});
+      }
     },
-    [fireRemote],
+    [],
   );
 
   const exportData = useCallback((): Persisted => ({ habits, logs, profile, freezes }), [habits, logs, profile, freezes]);

@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+﻿import { useRouter } from 'expo-router';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,7 +14,7 @@ export default function FriendsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const dark = theme.scheme === 'dark';
-  const { live, friends, pool, incoming, outgoing, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge } = useSocial();
+  const { live, friends, incoming, outgoing, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge } = useSocial();
   const [toast, setToast] = useState<string | null>(null);
 
   const [query, setQuery] = useState('');
@@ -198,8 +198,8 @@ export default function FriendsScreen() {
           </>
         )}
 
-        {/* Discovery: search (live) or the demo suggested pool */}
-        {live ? (
+        {/* Discovery: search by @username (live only) */}
+        {live && (
           <>
             {label('Add by username')}
             <TextInput
@@ -219,7 +219,7 @@ export default function FriendsScreen() {
                   </Body>
                 ) : results.length === 0 ? (
                   <Body size={13} secondary>
-                    No one found for “{query.trim()}”.
+                    No one found for "{query.trim()}".
                   </Body>
                 ) : (
                   results.map((u) => row(u, addButton(u)))
@@ -227,13 +227,6 @@ export default function FriendsScreen() {
               </View>
             )}
           </>
-        ) : (
-          pool.length > 0 && (
-            <>
-              {label('Suggested')}
-              <View style={{ gap: 9 }}>{pool.map((p) => row(p, addButton(p)))}</View>
-            </>
-          )
         )}
       </ScrollView>
 

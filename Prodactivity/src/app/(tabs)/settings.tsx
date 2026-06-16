@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 
 import { Glass } from '@/components/glass';
 import { Screen } from '@/components/screen';
@@ -73,16 +73,12 @@ export default function SettingsScreen() {
       {/* Profile */}
       <Pressable onPress={() => router.push('/profile')}>
         <Glass radius={22} style={{ flexDirection: 'row', alignItems: 'center', gap: 13, padding: 14, marginTop: 16 }}>
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              backgroundColor: theme.scheme === 'dark' ? '#4a3f5a' : '#FFCFA0',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Body size={26}>{profile.emoji}</Body>
+          <View style={{ width: 50, height: 50, borderRadius: 25, overflow: 'hidden', backgroundColor: theme.scheme === 'dark' ? '#4a3f5a' : '#FFCFA0', alignItems: 'center', justifyContent: 'center' }}>
+            {profile.avatar_url ? (
+              <Image source={{ uri: profile.avatar_url }} style={{ width: 50, height: 50 }} />
+            ) : (
+              <Body size={26}>{profile.emoji}</Body>
+            )}
           </View>
           <View style={{ flex: 1 }}>
             <Display size={17} weight="600">

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Social accountability layer — friends + a photo "proof" feed.
  *
  * Hybrid, mirroring the habit store:
@@ -63,7 +63,6 @@ export const REACTION_EMOJIS = ['👏', '🔥', '💪', '🎉'] as const;
 
 type Persisted = {
   friends: SocialUser[];
-  pool: SocialUser[];
   posts: Post[];
   reactions: Reactions;
   nudges: Nudge[];
@@ -85,20 +84,11 @@ const FRIENDS: SocialUser[] = [
   { id: 'lena', name: 'Lena', emoji: '🐯', accent: Palette.water },
 ];
 
-const POOL: SocialUser[] = [
-  { id: 'theo', name: 'Theo', emoji: '🐲', accent: Palette.meditate },
-  { id: 'priya', name: 'Priya', emoji: '🦉', accent: Palette.greens },
-  { id: 'sam', name: 'Sam', emoji: '🐧', accent: Palette.pink },
-];
-
 const SEED_POSTS: Post[] = [
-  { id: 's1', authorId: 'aya', kind: 'habit', habitName: 'Morning run', habitEmoji: '🏃', accent: Palette.run, streak: 12, photoUri: null, caption: '6am and freezing but it’s done 🥶', createdAt: now - 2 * HOUR },
+  { id: 's1', authorId: 'aya', kind: 'habit', habitName: 'Morning run', habitEmoji: '🏃', accent: Palette.run, streak: 12, photoUri: null, caption: "6am and freezing but it's done 🥶", createdAt: now - 2 * HOUR },
   { id: 's2', authorId: 'marco', kind: 'habit', habitName: 'Read', habitEmoji: '📚', accent: Palette.read, streak: 5, photoUri: null, caption: '20 pages before work', createdAt: now - 5 * HOUR },
   { id: 's3', authorId: 'lena', kind: 'habit', habitName: 'Drink water', habitEmoji: '💧', accent: Palette.water, streak: 21, photoUri: null, caption: 'glass #8 ✅ staying hydrated', createdAt: now - 9 * HOUR },
   { id: 's4', authorId: 'aya', kind: 'free', photoUri: null, caption: 'rest day reset — meal prep done 🥗', createdAt: now - 26 * HOUR },
-  // Posts from suggested (not-yet-added) friends — hidden until you add them.
-  { id: 's5', authorId: 'theo', kind: 'habit', habitName: 'Meditate', habitEmoji: '🧘', accent: Palette.meditate, streak: 8, photoUri: null, caption: '10 min of calm', createdAt: now - 4 * HOUR },
-  { id: 's6', authorId: 'priya', kind: 'habit', habitName: 'Eat greens', habitEmoji: '🥗', accent: Palette.greens, streak: 30, photoUri: null, caption: 'a month strong 💚', createdAt: now - 7 * HOUR },
 ];
 
 const SEED_REACTIONS: Reactions = {
@@ -155,8 +145,6 @@ type SocialValue = {
   /** The current user's id: their auth uuid when live, otherwise the demo `ME`. */
   meId: string;
   friends: SocialUser[];
-  /** Demo-only suggested accounts (empty when live — use `searchUsers` instead). */
-  pool: SocialUser[];
   posts: Post[];
   reactions: Reactions;
   nudges: Nudge[];
@@ -193,7 +181,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
 
   const [ready, setReady] = useState(false);
   const [friends, setFriends] = useState<SocialUser[]>(FRIENDS);
-  const [pool, setPool] = useState<SocialUser[]>(POOL);
   const [posts, setPosts] = useState<Post[]>(SEED_POSTS);
   const [reactions, setReactions] = useState<Reactions>(SEED_REACTIONS);
   const [nudges, setNudges] = useState<Nudge[]>(SEED_NUDGES);
@@ -232,7 +219,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
         if (raw && alive) {
           const data = JSON.parse(raw) as Partial<Cached>;
           if (data.friends) setFriends(data.friends);
-          if (data.pool) setPool(data.pool);
           if (data.posts) setPosts(data.posts);
           if (data.reactions) setReactions(data.reactions);
           if (data.nudges) setNudges(data.nudges);
@@ -259,9 +245,9 @@ export function SocialProvider({ children }: { children: ReactNode }) {
       first.current = false;
       return;
     }
-    const payload: Cached = { friends, pool, posts, reactions, nudges, incoming, outgoing, ownerId };
+    const payload: Cached = { friends, posts, reactions, nudges, incoming, outgoing, ownerId };
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(payload)).catch(() => {});
-  }, [ready, friends, pool, posts, reactions, nudges, incoming, outgoing, ownerId]);
+  }, [ready, friends, posts, reactions, nudges, incoming, outgoing, ownerId]);
 
   // Reconcile with the backend on sign-in; reset to demo seeds on sign-out.
   useEffect(() => {
@@ -272,7 +258,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
       // a signed-out device never shows another user's data.
       if (ownerRef.current) {
         setFriends(FRIENDS);
-        setPool(POOL);
         setPosts(SEED_POSTS);
         setReactions(SEED_REACTIONS);
         setNudges(SEED_NUDGES);
@@ -289,7 +274,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
         const snap = await pullSocial(userId!);
         if (!alive) return;
         setFriends(snap.friends);
-        setPool([]);
         setPosts(snap.posts);
         setReactions(snap.reactions);
         setNudges(snap.nudges);
@@ -306,11 +290,14 @@ export function SocialProvider({ children }: { children: ReactNode }) {
     };
   }, [ready, live, userId]);
 
-  const userById = useCallback((id: string) => [...friends, ...pool].find((u) => u.id === id), [friends, pool]);
+  const userById = useCallback((id: string) => friends.find((u) => u.id === id), [friends]);
 
   const feedPosts = useMemo(() => {
     const visible = new Set([meId, ...friends.map((f) => f.id)]);
-    return posts.filter((p) => visible.has(p.authorId)).sort((a, b) => b.createdAt - a.createdAt);
+    const cutoff = Date.now() - 3 * 24 * 60 * 60 * 1000;
+    return posts
+      .filter((p) => visible.has(p.authorId) && p.createdAt >= cutoff)
+      .sort((a, b) => b.createdAt - a.createdAt);
   }, [posts, friends, meId]);
 
   const unseenNudges = useMemo(() => nudges.filter((n) => !n.seen), [nudges]);
@@ -357,8 +344,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
 
   const requestFriend = useCallback((target: SocialUser) => {
     if (!liveRef.current) {
-      // Demo: add immediately, moving from the suggested pool.
-      setPool((prev) => prev.filter((u) => u.id !== target.id));
       setFriends((prev) => (prev.some((f) => f.id === target.id) ? prev : [...prev, target]));
       return;
     }
@@ -383,16 +368,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
   }, [fireRemote]);
 
   const removeFriend = useCallback((id: string) => {
-    if (!liveRef.current) {
-      // Demo: return them to the suggested pool.
-      setFriends((prevFriends) => {
-        const u = prevFriends.find((f) => f.id === id);
-        if (!u) return prevFriends;
-        setPool((prevPool) => (prevPool.some((x) => x.id === id) ? prevPool : [...prevPool, u]));
-        return prevFriends.filter((f) => f.id !== id);
-      });
-      return;
-    }
     setFriends((prev) => prev.filter((f) => f.id !== id));
     fireRemote(() => deleteFriendship(userIdRef.current!, id));
   }, [fireRemote]);
@@ -413,7 +388,6 @@ export function SocialProvider({ children }: { children: ReactNode }) {
       live,
       meId,
       friends,
-      pool,
       posts,
       reactions,
       nudges,
@@ -433,7 +407,7 @@ export function SocialProvider({ children }: { children: ReactNode }) {
       nudge,
       markNudgesSeen,
     }),
-    [ready, live, meId, friends, pool, posts, reactions, nudges, incoming, outgoing, feedPosts, unseenNudges, userById, preparePhoto, addPost, toggleReaction, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge, markNudgesSeen],
+    [ready, live, meId, friends, posts, reactions, nudges, incoming, outgoing, feedPosts, unseenNudges, userById, preparePhoto, addPost, toggleReaction, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge, markNudgesSeen],
   );
 
   return <SocialContext.Provider value={value}>{children}</SocialContext.Provider>;
