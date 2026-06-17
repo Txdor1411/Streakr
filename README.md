@@ -36,7 +36,41 @@ And I got to work...
 
 ### Now the technical part
 
+The stack used: 
+
+Throughout the process of building this app I have used Claude Code to facilitate the development of the app in a shorter time manner. With this said, I do not consider the app "vibe coded" due to the fact that a lot of time was spent on manually checking and correcting any mistakes made by Claude.
+
+
+
 ### FAQ
+
+<details>
+
+<summary>How does this work?</summary>
+
+### TLDR; You create habits, add friends and post videos/photos to prove it
+
+
+
+</details>
+
+<details>
+
+<summary>Why not use Instagram or other apps?</summary>
+
+### TLDR; Instagram is very distracting and you might not like random people seeing your daily life.
+
+</details>
+
+<details>
+
+<summary>What comes next?</summary>
+
+### TLDR; Building an ecosystem around these apps. Next: Workout tracker, Notes app and Calendar.
+
+
+
+</details>
 
 ### License
 
