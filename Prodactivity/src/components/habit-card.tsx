@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import { Pressable, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, withSequence, withTiming, Easing } from 'react-native-reanimated';
 
 import { Glass } from '@/components/glass';
 import { CheckIcon } from '@/components/icons';
@@ -21,6 +23,20 @@ export function LogButton({
   const theme = useTheme();
   const isCount = habit.type === 'count';
   const done = habit.done || (isCount && habit.value >= habit.goal);
+  const prevDone = useRef(done);
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    if (done && !prevDone.current) {
+      scale.value = withSequence(
+        withTiming(1.08, { duration: 120, easing: Easing.out(Easing.quad) }),
+        withTiming(1, { duration: 200, easing: Easing.out(Easing.quad) }),
+      );
+    }
+    prevDone.current = done;
+  }, [done]);
+
+  const animStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
   let inner;
   if (done) {
@@ -69,9 +85,15 @@ export function LogButton({
   }
 
   return (
-    <Pressable onPress={onPress} hitSlop={6}>
-      {inner}
-    </Pressable>
+    <Animated.View style={animStyle}>
+      <Pressable
+        onPress={onPress}
+        onPressIn={() => { scale.value = withTiming(0.93, { duration: 80, easing: Easing.out(Easing.quad) }); }}
+        onPressOut={() => { scale.value = withTiming(1, { duration: 150, easing: Easing.out(Easing.quad) }); }}
+        hitSlop={6}>
+        {inner}
+      </Pressable>
+    </Animated.View>
   );
 }
 

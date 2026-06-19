@@ -1,5 +1,7 @@
+import { useEffect, type ReactNode } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, withDelay, withTiming, Easing } from 'react-native-reanimated';
 
 import { Confetti } from '@/components/confetti';
 import { Glass } from '@/components/glass';
@@ -29,12 +31,28 @@ function greeting(hour: number) {
   return 'Good evening';
 }
 
+function AnimatedCard({ index, children }: { index: number; children: ReactNode }) {
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(14);
+  useEffect(() => {
+    const ease = Easing.out(Easing.quad);
+    opacity.value = withDelay(index * 50, withTiming(1, { duration: 280, easing: ease }));
+    translateY.value = withDelay(index * 50, withTiming(0, { duration: 280, easing: ease }));
+  }, []);
+  const style = useAnimatedStyle(() => ({ opacity: opacity.value, transform: [{ translateY: translateY.value }] }));
+  return <Animated.View style={style}>{children}</Animated.View>;
+}
+
 export default function TodayScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { profile, habitsForDay, logHabit } = useStore();
 
   const firstName = profile.name.trim().split(/\s+/)[0] || 'there';
+  const avatarScale = useSharedValue(1);
+  const avatarStyle = useAnimatedStyle(() => ({ transform: [{ scale: avatarScale.value }] }));
+  const fabScale = useSharedValue(1);
+  const fabStyle = useAnimatedStyle(() => ({ transform: [{ scale: fabScale.value }] }));
   const now = new Date();
   const todayIdx = weekdayMon0(now);
 
@@ -81,18 +99,22 @@ export default function TodayScreen() {
               {dateLabel}
             </Body>
           </View>
-          <Pressable
-            onPress={() => router.push('/profile')}
-            style={{
-              width: 46,
-              height: 46,
-              borderRadius: 23,
-              backgroundColor: theme.scheme === 'dark' ? '#4a3f5a' : '#FFCFA0',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Body size={24}>{profile.emoji}</Body>
-          </Pressable>
+          <Animated.View style={avatarStyle}>
+            <Pressable
+              onPress={() => router.push('/profile')}
+              onPressIn={() => { avatarScale.value = withTiming(0.93, { duration: 80, easing: Easing.out(Easing.quad) }); }}
+              onPressOut={() => { avatarScale.value = withTiming(1, { duration: 150, easing: Easing.out(Easing.quad) }); }}
+              style={{
+                width: 46,
+                height: 46,
+                borderRadius: 23,
+                backgroundColor: theme.scheme === 'dark' ? '#4a3f5a' : '#FFCFA0',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Body size={24}>{profile.emoji}</Body>
+            </Pressable>
+          </Animated.View>
         </View>
 
         {/* Streak summary */}
@@ -184,35 +206,38 @@ export default function TodayScreen() {
           </Glass>
         ) : (
           <View style={{ gap: 10 }}>
-            {habits.map((h) => (
-              <Pressable key={h.id} onPress={() => router.push(`/habit/${h.id}`)}>
-                <HabitCard habit={h} subtitle={subFor(h)} onLog={() => logHabit(h.id)} />
-              </Pressable>
+            {habits.map((h, i) => (
+              <AnimatedCard key={h.id} index={i}>
+                <Pressable onPress={() => router.push(`/habit/${h.id}`)}>
+                  <HabitCard habit={h} subtitle={subFor(h)} onLog={() => logHabit(h.id)} />
+                </Pressable>
+              </AnimatedCard>
             ))}
           </View>
         )}
       </Screen>
 
       {/* Floating add button */}
-      <Pressable
-        onPress={() => router.push('/create')}
-        style={{
-          position: 'absolute',
-          right: 22,
-          bottom: 102,
-          width: 54,
-          height: 54,
-          borderRadius: 19,
-          backgroundColor: Palette.coral,
-          alignItems: 'center',
-          justifyContent: 'center',
-          shadowColor: Palette.coral,
-          shadowOpacity: 0.5,
-          shadowRadius: 16,
-          shadowOffset: { width: 0, height: 10 },
-        }}>
-        <PlusIcon />
-      </Pressable>
+      <Animated.View style={[fabStyle, { position: 'absolute', right: 22, bottom: 102 }]}>
+        <Pressable
+          onPress={() => router.push('/create')}
+          onPressIn={() => { fabScale.value = withTiming(0.92, { duration: 80, easing: Easing.out(Easing.quad) }); }}
+          onPressOut={() => { fabScale.value = withTiming(1, { duration: 150, easing: Easing.out(Easing.quad) }); }}
+          style={{
+            width: 54,
+            height: 54,
+            borderRadius: 19,
+            backgroundColor: Palette.coral,
+            alignItems: 'center',
+            justifyContent: 'center',
+            shadowColor: Palette.coral,
+            shadowOpacity: 0.5,
+            shadowRadius: 16,
+            shadowOffset: { width: 0, height: 10 },
+          }}>
+          <PlusIcon />
+        </Pressable>
+      </Animated.View>
 
       {allDone && <Confetti />}
     </View>

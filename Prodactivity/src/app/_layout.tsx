@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Stack } from 'expo-router/stack';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Svg, { G, Path, Rect } from 'react-native-svg';
+import Svg, { G, Path } from 'react-native-svg';
 
 import { AuthProvider } from '@/design/auth';
 import { OnboardingProvider, useOnboarding } from '@/design/onboarding';
@@ -17,7 +17,6 @@ import { SocialProvider } from '@/design/social';
 function StreakrLogo({ size = 40 }: { size?: number }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 698.02 698.02">
-      <Rect width="698.02" height="698.02" fill="#1a1a1a" rx="140" />
       <G transform="translate(131.35,69.80)">
         <G
           transform="translate(-272.604075,768.695794) scale(0.100000,-0.100000)"

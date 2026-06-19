@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
 import { useTheme } from '@/design/theme';
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type ProgressRingProps = {
   size: number;
@@ -22,11 +26,18 @@ export function ProgressRing({ size, stroke, progress, color, trackColor, childr
   const track = trackColor ?? (theme.scheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(120,120,130,0.15)');
   const clamped = Math.max(0, Math.min(1, progress));
 
+  const offset = useSharedValue(c * (1 - clamped));
+  useEffect(() => {
+    offset.value = withTiming(c * (1 - clamped), { duration: 500, easing: Easing.out(Easing.quad) });
+  }, [clamped, c]);
+
+  const animatedProps = useAnimatedProps(() => ({ strokeDashoffset: offset.value }));
+
   return (
     <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
       <Svg width={size} height={size} style={{ transform: [{ rotate: '-90deg' }] }}>
         <Circle cx={size / 2} cy={size / 2} r={r} stroke={track} strokeWidth={stroke} fill="none" />
-        <Circle
+        <AnimatedCircle
           cx={size / 2}
           cy={size / 2}
           r={r}
@@ -34,7 +45,8 @@ export function ProgressRing({ size, stroke, progress, color, trackColor, childr
           strokeWidth={stroke}
           fill="none"
           strokeLinecap="round"
-          strokeDasharray={`${c * clamped} ${c}`}
+          strokeDasharray={c}
+          animatedProps={animatedProps}
         />
       </Svg>
       {children != null && (

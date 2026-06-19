@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Glass } from '@/components/glass';
@@ -24,6 +26,36 @@ const LABELS: Record<string, string> = {
 
 type TabRoute = { key: string; name: string };
 
+function TabItem({
+  route,
+  focused,
+  color,
+  onPress,
+}: {
+  route: TabRoute;
+  focused: boolean;
+  color: string;
+  onPress: () => void;
+}) {
+  const Icon = ICONS[route.name];
+  if (!Icon) return null;
+  const scale = useSharedValue(focused ? 1.06 : 1);
+  useEffect(() => {
+    scale.value = withTiming(focused ? 1.06 : 1, { duration: 180, easing: Easing.out(Easing.quad) });
+  }, [focused]);
+  const animStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  return (
+    <Pressable onPress={onPress} style={styles.item} hitSlop={6}>
+      <Animated.View style={[{ alignItems: 'center', gap: 3 }, animStyle]}>
+        <Icon color={color} active={focused} />
+        <Body size={9.5} weight={focused ? '700' : '600'} color={color}>
+          {LABELS[route.name]}
+        </Body>
+      </Animated.View>
+    </Pressable>
+  );
+}
+
 /** Floating frosted-glass tab bar matching the design's bottom nav.
  *  Typed loosely to avoid coupling to expo-router's internal navigator types. */
 export function FloatingTabBar({ state, navigation }: { state: any; navigation: any }) {
@@ -36,24 +68,14 @@ export function FloatingTabBar({ state, navigation }: { state: any; navigation: 
       <Glass radius={26} intensity={theme.scheme === 'dark' ? 50 : 60} style={styles.bar}>
         <View style={styles.row}>
           {state.routes.map((route: TabRoute, i: number) => {
-            const Icon = ICONS[route.name];
-            if (!Icon) return null;
+            if (!ICONS[route.name]) return null;
             const focused = state.index === i;
             const color = focused ? theme.accent : inactive;
-
             const onPress = () => {
               const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
               if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
             };
-
-            return (
-              <Pressable key={route.key} onPress={onPress} style={styles.item} hitSlop={6}>
-                <Icon color={color} active={focused} />
-                <Body size={9.5} weight={focused ? '700' : '600'} color={color}>
-                  {LABELS[route.name]}
-                </Body>
-              </Pressable>
-            );
+            return <TabItem key={route.key} route={route} focused={focused} color={color} onPress={onPress} />;
           })}
         </View>
       </Glass>

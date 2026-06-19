@@ -52,7 +52,7 @@ Throughout the process of building this app I have used Claude Code to facilitat
 
 ### TLDR; You create habits, add friends and post videos/photos to prove it
 
-
+    It has never been easier to share your achievements with friends and keep each other accountable! After creating an account and mutually following someone, you can see their activity and goals. There are also some nice finishing toucher, where you can react to others' posts or "Nudge" them if they've been skipping it lately.
 
 </details>
 
@@ -62,6 +62,9 @@ Throughout the process of building this app I have used Claude Code to facilitat
 
 ### TLDR; Instagram is very distracting and you might not like random people seeing your daily life.
 
+    Streakr offers better privacy and a sense of mutual aid within it's community.
+    After all, it's much easier to complete & track habits after seeing a feed full of committed people rather than scrolling endless social media feeds.
+
 </details>
 
 <details>
@@ -70,10 +73,10 @@ Throughout the process of building this app I have used Claude Code to facilitat
 
 ### TLDR; Building an ecosystem around these apps. Next: Workout tracker, Notes app and Calendar.
 
-
+    What is better than an app that tracks habits and helps people achieve their goals? An ecosystem that does this! More apps like this one are on their way...
 
 </details>
 
 ### License
 
-MIT License
+[MIT License](Prodactivity/LICENSE)
