@@ -46,7 +46,7 @@ function AnimatedCard({ index, children }: { index: number; children: ReactNode 
 export default function TodayScreen() {
   const theme = useTheme();
   const router = useRouter();
-  const { profile, habitsForDay, logHabit } = useStore();
+  const { profile, habitsForDay, logHabit, frozenDates } = useStore();
 
   const firstName = profile.name.trim().split(/\s+/)[0] || 'there';
   const avatarScale = useSharedValue(1);
@@ -74,13 +74,16 @@ export default function TodayScreen() {
   const total = habits.length;
   const allDone = total > 0 && completed === total;
 
-  // Overall streak = consecutive days where every scheduled habit was done.
+  // Overall streak = consecutive scheduled days where every habit was done (or frozen).
+  // Days with nothing scheduled are skipped, matching per-habit streak behaviour.
   let streak = 0;
   for (let i = 0; i < 365; i++) {
     const d = new Date(now);
     d.setDate(now.getDate() - i);
-    const dh = habitsForDay(dateKey(d)).filter((h) => h.days[weekdayMon0(d)]);
-    if (dh.length > 0 && dh.every((h) => h.done)) streak++;
+    const key = dateKey(d);
+    const dh = habitsForDay(key).filter((h) => h.days[weekdayMon0(d)]);
+    if (dh.length === 0) continue;
+    if (dh.every((h) => h.done) || frozenDates.has(key)) streak++;
     else if (i !== 0) break;
   }
 
@@ -139,13 +142,13 @@ export default function TodayScreen() {
             </Body>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Display size={17} weight="700" color={theme.accent}>
-              {completed}/{total}
-            </Display>
-            <Body size={10.5} muted style={{ marginTop: 3 }}>
-              {total - completed} left
-            </Body>
-          </View>
+              <Display size={17} weight="700" color={theme.accent}>
+                {completed}/{total}
+              </Display>
+              <Body size={10.5} muted style={{ marginTop: 3 }}>
+                {total - completed} left
+              </Body>
+            </View>
         </Glass>
 
         {/* Weekday strip */}

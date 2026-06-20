@@ -321,11 +321,21 @@ export function SocialProvider({ children }: { children: ReactNode }) {
     let willBeOn = false;
     setReactions((prev) => {
       const forPost = { ...(prev[postId] ?? {}) };
-      const reactors = forPost[emoji] ?? [];
-      const has = reactors.includes(me);
-      willBeOn = !has;
-      forPost[emoji] = has ? reactors.filter((r) => r !== me) : [...reactors, me];
-      if (forPost[emoji].length === 0) delete forPost[emoji];
+      const existing = Object.keys(forPost).find((e) => (forPost[e] ?? []).includes(me));
+      if (existing === emoji) {
+        // Tap same emoji → remove it
+        willBeOn = false;
+        forPost[emoji] = forPost[emoji].filter((r) => r !== me);
+        if (forPost[emoji].length === 0) delete forPost[emoji];
+      } else {
+        // Tap different (or new) emoji → remove old, add new
+        willBeOn = true;
+        if (existing) {
+          forPost[existing] = forPost[existing].filter((r) => r !== me);
+          if (forPost[existing].length === 0) delete forPost[existing];
+        }
+        forPost[emoji] = [...(forPost[emoji] ?? []), me];
+      }
       return { ...prev, [postId]: forPost };
     });
     fireRemote(() => setReactionRemote(userIdRef.current!, postId, emoji, willBeOn));

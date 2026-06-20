@@ -184,10 +184,12 @@ export async function deletePost(id: string): Promise<void> {
   if (error) throw error;
 }
 
-/** Add (`on`) or remove a single reaction by the current user. */
+/** Add (`on`) or remove a reaction by the current user. Enforces one reaction per post. */
 export async function setReaction(userId: string, postId: string, emoji: string, on: boolean): Promise<void> {
   if (!supabase) return;
   if (on) {
+    // Delete any existing reaction first so only one remains per post
+    await supabase.from('reactions').delete().match({ post_id: postId, user_id: userId });
     const { error } = await supabase.from('reactions').insert({ post_id: postId, user_id: userId, emoji });
     if (error) throw error;
   } else {

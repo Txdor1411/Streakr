@@ -46,7 +46,7 @@ export type Profile = { name: string; emoji: string; username?: string; avatar_u
 /** habitId → (YYYY-MM-DD → amount logged that day). */
 export type Logs = Record<string, Record<string, number>>;
 
-type Persisted = { habits: HabitDef[]; logs: Logs; profile: Profile; freezes?: number };
+type Persisted = { habits: HabitDef[]; logs: Logs; profile: Profile; freezes?: number; frozenArr?: string[] };
 
 /** On-disk shape: the exportable data plus which account the cache belongs to. */
 type Cached = Persisted & { ownerId?: string | null };
@@ -108,9 +108,13 @@ function isComplete(habit: HabitDef, amount: number | undefined): boolean {
 /**
  * Current streak: consecutive *scheduled* days, counting back from today,
  * that were completed. Today not-yet-done is a grace day (doesn't break it);
- * unscheduled days are skipped.
+ * unscheduled days are skipped. Frozen dates count as completed.
  */
-export function computeStreak(habit: HabitDef, log: Record<string, number> = {}): number {
+export function computeStreak(
+  habit: HabitDef,
+  log: Record<string, number> = {},
+  frozenDates: ReadonlySet<string> = new Set(),
+): number {
   let streak = 0;
   let cursor = new Date();
   const today = todayKey();
@@ -119,7 +123,7 @@ export function computeStreak(habit: HabitDef, log: Record<string, number> = {})
     const key = dateKey(cursor);
     const scheduled = habit.days[weekdayMon0(cursor)];
     if (scheduled) {
-      if (isComplete(habit, log[key])) {
+      if (isComplete(habit, log[key]) || frozenDates.has(key)) {
         streak++;
       } else if (key !== today) {
         break;
@@ -130,12 +134,17 @@ export function computeStreak(habit: HabitDef, log: Record<string, number> = {})
   return streak;
 }
 
-/** Longest run of completed scheduled days across all history. */
-export function computeBestStreak(habit: HabitDef, log: Record<string, number> = {}): number {
+/** Longest run of completed scheduled days across all history. Frozen dates count as completed. */
+export function computeBestStreak(
+  habit: HabitDef,
+  log: Record<string, number> = {},
+  frozenDates: ReadonlySet<string> = new Set(),
+): number {
   const keys = Object.keys(log).filter((k) => isComplete(habit, log[k]));
-  if (keys.length === 0) return 0;
-  keys.sort();
-  const earliest = new Date(keys[0]);
+  if (keys.length === 0 && frozenDates.size === 0) return 0;
+  const allKeys = [...keys, ...frozenDates].sort();
+  if (allKeys.length === 0) return 0;
+  const earliest = new Date(allKeys[0]);
   let best = 0;
   let run = 0;
   let cursor = new Date(earliest);
@@ -143,7 +152,7 @@ export function computeBestStreak(habit: HabitDef, log: Record<string, number> =
   while (cursor <= end) {
     const key = dateKey(cursor);
     if (habit.days[weekdayMon0(cursor)]) {
-      if (isComplete(habit, log[key])) {
+      if (isComplete(habit, log[key]) || frozenDates.has(key)) {
         run++;
         if (run > best) best = run;
       } else {
@@ -177,6 +186,10 @@ type StoreValue = {
   setProfile: (patch: Partial<Profile>) => void;
   /** Remaining streak-freeze tokens (starts at MAX_FREEZES). */
   freezes: number;
+  /** Dates (YYYY-MM-DD) protected by a streak freeze. */
+  frozenDates: ReadonlySet<string>;
+  /** Spend one freeze token to protect a day; no-op if out of tokens or day already frozen. */
+  freezeDay: (day?: string) => void;
   /** Replace everything (used by JSON import). */
   replaceAll: (data: Persisted) => void;
   exportData: () => Persisted;
@@ -194,7 +207,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [logs, setLogs] = useState<Logs>({});
   const [profile, setProfileState] = useState<Profile>(SEED_PROFILE);
   const [freezes, setFreezes] = useState(MAX_FREEZES);
+  const [frozenArr, setFrozenArr] = useState<string[]>([]);
   const [ownerId, setOwnerId] = useState<string | null>(null);
+  const frozenDates = useMemo(() => new Set(frozenArr), [frozenArr]);
 
   // Latest values for use inside effects/callbacks without re-subscribing.
   const habitsRef = useRef(habits);
@@ -232,6 +247,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           if (data.logs) setLogs(data.logs);
           if (data.profile) setProfileState({ ...SEED_PROFILE, ...data.profile });
           if (typeof data.freezes === 'number') setFreezes(data.freezes);
+          if (Array.isArray(data.frozenArr)) setFrozenArr(data.frozenArr);
           if (data.ownerId !== undefined) setOwnerId(data.ownerId);
         }
       } catch {
@@ -253,7 +269,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       first.current = false;
       return;
     }
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ habits, logs, profile, freezes, ownerId } satisfies Cached)).catch(() => {});
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ habits, logs, profile, freezes, frozenArr, ownerId } satisfies Cached)).catch(() => {});
   }, [ready, habits, logs, profile, freezes, ownerId]);
 
   // Drain the pending queue whenever the app comes back to the foreground.
@@ -318,9 +334,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       habits.map((h) => {
         const log = logs[h.id] ?? {};
         const value = log[key] ?? 0;
-        return { ...h, value, done: isComplete(h, value), streak: computeStreak(h, log) };
+        return { ...h, value, done: isComplete(h, value), streak: computeStreak(h, log, frozenDates) };
       }),
-    [habits, logs],
+    [habits, logs, frozenDates],
   );
 
   const setAmount = useCallback(
@@ -401,6 +417,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [fireRemote],
   );
 
+  const freezeDay = useCallback(
+    (day: string = todayKey()) => {
+      if (freezes <= 0 || frozenArr.includes(day)) return;
+      setFrozenArr((prev) => [...prev, day]);
+      setFreezes((prev) => prev - 1);
+    },
+    [freezes, frozenArr],
+  );
+
   const replaceAll = useCallback(
     (data: Persisted) => {
       const nextHabits = data.habits ?? SEED_HABITS;
@@ -410,6 +435,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setLogs(nextLogs);
       setProfileState(nextProfile);
       setFreezes(typeof data.freezes === 'number' ? data.freezes : MAX_FREEZES);
+      setFrozenArr(Array.isArray(data.frozenArr) ? data.frozenArr : []);
       const uid = userIdRef.current;
       if (uid && isSupabaseConfigured) {
         // Imported data becomes canonical — push it with an empty remote baseline.
@@ -424,7 +450,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const exportData = useCallback((): Persisted => ({ habits, logs, profile, freezes }), [habits, logs, profile, freezes]);
+  const exportData = useCallback((): Persisted => ({ habits, logs, profile, freezes, frozenArr }), [habits, logs, profile, freezes, frozenArr]);
 
   const value = useMemo<StoreValue>(
     () => ({
@@ -441,10 +467,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       removeHabit,
       setProfile,
       freezes,
+      frozenDates,
+      freezeDay,
       replaceAll,
       exportData,
     }),
-    [ready, syncing, habits, profile, habitsForDay, logFor, logHabit, setAmount, addHabit, updateHabit, removeHabit, setProfile, freezes, replaceAll, exportData],
+    [ready, syncing, habits, profile, habitsForDay, logFor, logHabit, setAmount, addHabit, updateHabit, removeHabit, setProfile, freezes, frozenDates, freezeDay, replaceAll, exportData],
   );
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

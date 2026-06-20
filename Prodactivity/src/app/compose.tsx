@@ -18,7 +18,7 @@ export default function ComposeScreen() {
   const insets = useSafeAreaInsets();
   const dark = theme.scheme === 'dark';
   const { addPost, preparePhoto } = useSocial();
-  const { habits, logFor, setAmount } = useStore();
+  const { habits, logFor, setAmount, frozenDates } = useStore();
 
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export default function ComposeScreen() {
     if (selected) {
       const baseLog = logFor(selected.id);
       const log = markDone ? { ...baseLog, [todayKey()]: selected.goal } : baseLog;
-      const streak = computeStreak(selected, log);
+      const streak = computeStreak(selected, log, frozenDates);
       addPost({ kind: 'habit', habitName: selected.name, habitEmoji: selected.emoji, accent: selected.accent, streak, photoUri: persisted, caption: text });
       if (markDone) setAmount(selected.id, selected.goal);
     } else {

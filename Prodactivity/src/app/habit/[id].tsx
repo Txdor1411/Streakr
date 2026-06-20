@@ -11,7 +11,7 @@ import { Body, Display } from '@/components/text';
 import { Wallpaper } from '@/components/wallpaper';
 import { computeBestStreak, computeStreak, dateKey, todayKey, useStore, type HabitDef } from '@/design/store';
 import { useTheme } from '@/design/theme';
-import { Palette } from '@/design/tokens';
+import { Palette, tint } from '@/design/tokens';
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -31,7 +31,7 @@ export default function HabitDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { habits, logFor, logHabit, removeHabit } = useStore();
+  const { habits, logFor, logHabit, removeHabit, frozenDates, freezes, freezeDay } = useStore();
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -71,8 +71,17 @@ export default function HabitDetailScreen() {
 
   const accent = habit.accent;
   const log = logFor(habit.id);
-  const streak = computeStreak(habit, log);
-  const best = computeBestStreak(habit, log);
+  const streak = computeStreak(habit, log, frozenDates);
+  const best = computeBestStreak(habit, log, frozenDates);
+
+  const yd = new Date();
+  yd.setDate(yd.getDate() - 1);
+  const ydKey = dateKey(yd);
+  const canFreezeYesterday =
+    freezes > 0 &&
+    habit.days[weekdayMon0(yd)] &&
+    !frozenDates.has(ydKey) &&
+    (log[ydKey] ?? 0) < habit.goal;
   const today = todayKey();
   const doneToday = (log[today] ?? 0) >= habit.goal;
 
@@ -151,21 +160,41 @@ export default function HabitDetailScreen() {
         </View>
 
         {/* Streak hero */}
-        <Glass radius={24} style={{ flexDirection: 'row', alignItems: 'center', gap: 13, padding: 16, marginTop: 14 }}>
-          <StreakFlame size={62} glyph={34} color={accent} />
-          <View>
-            <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 5 }}>
-              <Display size={38} weight="600" lineHeight={34}>
-                {streak}
-              </Display>
-              <Body size={14} weight="600" secondary>
-                {streak === 1 ? 'day' : 'days'}
+        <Glass radius={24} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 13, padding: 16, marginTop: 14 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 13 }}>
+            <StreakFlame size={62} glyph={34} color={accent} />
+            <View>
+              <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 5 }}>
+                <Display size={38} weight="600" lineHeight={34}>
+                  {streak}
+                </Display>
+                <Body size={14} weight="600" secondary>
+                  {streak === 1 ? 'day' : 'days'}
+                </Body>
+              </View>
+              <Body size={12.5} secondary style={{ marginTop: 3 }}>
+                Current streak · 🥇 best {best}
               </Body>
             </View>
-            <Body size={12.5} secondary style={{ marginTop: 3 }}>
-              Current streak · 🥇 best {best}
-            </Body>
           </View>
+          {canFreezeYesterday && (
+            <Pressable
+              onPress={() => freezeDay(ydKey)}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 4,
+                paddingHorizontal: 10,
+                paddingVertical: 7,
+                borderRadius: 12,
+                backgroundColor: tint(accent, theme.scheme === 'dark' ? '33' : '22'),
+              }}>
+              <Body size={13}>🧊</Body>
+              <Body size={12} weight="700" color={theme.scheme === 'dark' ? '#fff' : accent}>
+                Protect
+              </Body>
+            </Pressable>
+          )}
         </Glass>
 
         {/* Year heatmap */}
