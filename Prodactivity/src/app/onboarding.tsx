@@ -6,7 +6,7 @@
  * flag, which swaps the route gate (see `_layout.tsx`) over to the tabs.
  */
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -44,10 +44,15 @@ export default function OnboardingScreen() {
   const trimmed = name.trim();
   const handle = username.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
 
-  const finish = () => {
-    setProfile({ name: trimmed || 'You', emoji, ...(handle ? { username: handle } : null) });
+  const finish = useCallback(() => {
+    setProfile({ name: trimmed || profile.name, emoji, ...(handle ? { username: handle } : null) });
     complete();
-  };
+  }, [trimmed, profile.name, emoji, handle, setProfile, complete]);
+
+  // Auto-complete when the user finishes OAuth sign-in while on step 2.
+  useEffect(() => {
+    if (session && step === 2) finish();
+  }, [session, step, finish]);
 
   const accent = theme.accent;
   const inputStyle = {

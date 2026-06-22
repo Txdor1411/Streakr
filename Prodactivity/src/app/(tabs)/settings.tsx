@@ -15,10 +15,10 @@ import { Palette, tint } from '@/design/tokens';
 const PREF_LABEL: Record<string, 'light' | 'dark' | 'auto'> = { Light: 'light', Dark: 'dark', Auto: 'auto' };
 const LABEL_FROM_PREF: Record<string, string> = { light: 'Light', dark: 'Dark', auto: 'Auto' };
 
-function Toggle({ value, onChange, color = Palette.emerald }: { value: boolean; onChange: () => void; color?: string }) {
+function Toggle({ value, onChange, color = Palette.emerald, disabled = false }: { value: boolean; onChange: () => void; color?: string; disabled?: boolean }) {
   return (
     <Pressable
-      onPress={onChange}
+      onPress={disabled ? undefined : onChange}
       style={{
         width: 44,
         height: 26,
@@ -27,6 +27,7 @@ function Toggle({ value, onChange, color = Palette.emerald }: { value: boolean; 
         padding: 3,
         flexDirection: 'row',
         justifyContent: value ? 'flex-end' : 'flex-start',
+        opacity: disabled ? 0.4 : 1,
       }}>
       <View style={{ width: 20, height: 20, borderRadius: 10, backgroundColor: '#fff' }} />
     </Pressable>
@@ -55,7 +56,7 @@ export default function SettingsScreen() {
   const { pref, setPref } = useThemePref();
   const { profile, freezes } = useStore();
   const { configured, session, user, signOut } = useAuth();
-  const [reminders, setReminders] = useState(true);
+  const [reminders, setReminders] = useState(false);
 
   const signedIn = Boolean(session);
   const accountSub = !configured
@@ -192,11 +193,16 @@ export default function SettingsScreen() {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 14 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 11 }}>
             <IconTile emoji="🔔" color={Palette.read} />
-            <Body size={14.5} weight="500">
-              Daily reminders
-            </Body>
+            <View>
+              <Body size={14.5} weight="500">
+                Daily reminders
+              </Body>
+              <Body size={11} muted>
+                Coming soon
+              </Body>
+            </View>
           </View>
-          <Toggle value={reminders} onChange={() => setReminders((r) => !r)} />
+          <Toggle value={reminders} onChange={() => setReminders((r) => !r)} disabled />
         </View>
         <View style={{ height: 1, backgroundColor: theme.hairline, marginHorizontal: 14 }} />
         <Pressable onPress={() => router.push('/import')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 14 }}>

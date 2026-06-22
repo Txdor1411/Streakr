@@ -270,7 +270,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       return;
     }
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ habits, logs, profile, freezes, frozenArr, ownerId } satisfies Cached)).catch(() => {});
-  }, [ready, habits, logs, profile, freezes, ownerId]);
+  }, [ready, habits, logs, profile, freezes, frozenArr, ownerId]);
 
   // Drain the pending queue whenever the app comes back to the foreground.
   useEffect(() => {

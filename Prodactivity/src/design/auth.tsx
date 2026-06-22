@@ -70,10 +70,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase) return;
     Linking.getInitialURL().then((url) => {
-      if (url) exchangeCodeFromUrl(url).catch(() => {});
+      if (url) exchangeCodeFromUrl(url).catch((e) => { if (__DEV__) console.warn('[auth] OAuth exchange failed:', e?.message ?? e); });
     });
     const sub = Linking.addEventListener('url', ({ url }) => {
-      exchangeCodeFromUrl(url).catch(() => {});
+      exchangeCodeFromUrl(url).catch((e) => { if (__DEV__) console.warn('[auth] OAuth exchange failed:', e?.message ?? e); });
     });
     return () => sub.remove();
   }, []);

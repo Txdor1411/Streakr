@@ -75,6 +75,7 @@ export default function FeedScreen() {
     showToast(`Nudged ${friend.name} 👈`);
   };
 
+  const nudgeCount = unseenNudges.length;
   const incoming = unseenNudges[0];
 
   return (
@@ -109,7 +110,7 @@ export default function FeedScreen() {
               <Body size={20}>🔔</Body>
               <View style={{ flex: 1 }}>
                 <Display size={14} weight="600">
-                  {userById(incoming.fromId)?.name ?? 'A friend'} nudged you
+                  {nudgeCount > 1 ? `${nudgeCount} friends nudged you` : `${userById(incoming.fromId)?.name ?? 'A friend'} nudged you`}
                 </Display>
                 <Body size={12} secondary style={{ marginTop: 2 }}>
                   {incoming.habitName ? `Post proof of “${incoming.habitName}”` : 'Post your proof for today'}

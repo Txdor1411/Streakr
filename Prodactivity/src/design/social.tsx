@@ -74,8 +74,6 @@ type Cached = Persisted & { ownerId?: string | null };
 
 const STORAGE_KEY = 'streakr:social:v1';
 const HOUR = 3600_000;
-const now = Date.now();
-
 // --------------------------------------------------------------------- seeds
 
 const FRIENDS: SocialUser[] = [
@@ -84,12 +82,16 @@ const FRIENDS: SocialUser[] = [
   { id: 'lena', name: 'Lena', emoji: '🐯', accent: Palette.water },
 ];
 
-const SEED_POSTS: Post[] = [
-  { id: 's1', authorId: 'aya', kind: 'habit', habitName: 'Morning run', habitEmoji: '🏃', accent: Palette.run, streak: 12, photoUri: null, caption: "6am and freezing but it's done 🥶", createdAt: now - 2 * HOUR },
-  { id: 's2', authorId: 'marco', kind: 'habit', habitName: 'Read', habitEmoji: '📚', accent: Palette.read, streak: 5, photoUri: null, caption: '20 pages before work', createdAt: now - 5 * HOUR },
-  { id: 's3', authorId: 'lena', kind: 'habit', habitName: 'Drink water', habitEmoji: '💧', accent: Palette.water, streak: 21, photoUri: null, caption: 'glass #8 ✅ staying hydrated', createdAt: now - 9 * HOUR },
-  { id: 's4', authorId: 'aya', kind: 'free', photoUri: null, caption: 'rest day reset — meal prep done 🥗', createdAt: now - 26 * HOUR },
-];
+// Functions so timestamps are fresh each time seeds are used (not frozen at bundle load).
+const SEED_POSTS = (): Post[] => {
+  const now = Date.now();
+  return [
+    { id: 's1', authorId: 'aya', kind: 'habit', habitName: 'Morning run', habitEmoji: '🏃', accent: Palette.run, streak: 12, photoUri: null, caption: "6am and freezing but it's done 🥶", createdAt: now - 2 * HOUR },
+    { id: 's2', authorId: 'marco', kind: 'habit', habitName: 'Read', habitEmoji: '📚', accent: Palette.read, streak: 5, photoUri: null, caption: '20 pages before work', createdAt: now - 5 * HOUR },
+    { id: 's3', authorId: 'lena', kind: 'habit', habitName: 'Drink water', habitEmoji: '💧', accent: Palette.water, streak: 21, photoUri: null, caption: 'glass #8 ✅ staying hydrated', createdAt: now - 9 * HOUR },
+    { id: 's4', authorId: 'aya', kind: 'free', photoUri: null, caption: 'rest day reset — meal prep done 🥗', createdAt: now - 26 * HOUR },
+  ];
+};
 
 const SEED_REACTIONS: Reactions = {
   s1: { '🔥': ['marco', 'lena'], '💪': ['lena'] },
@@ -97,9 +99,12 @@ const SEED_REACTIONS: Reactions = {
   s3: { '🔥': ['aya', 'marco'], '🎉': ['marco'] },
 };
 
-const SEED_NUDGES: Nudge[] = [
-  { id: 'n1', fromId: 'aya', toId: ME, habitName: 'Morning run', createdAt: now - 1 * HOUR, seen: false },
-];
+const SEED_NUDGES = (): Nudge[] => {
+  const now = Date.now();
+  return [
+    { id: 'n1', fromId: 'aya', toId: ME, habitName: 'Morning run', createdAt: now - 1 * HOUR, seen: false },
+  ];
+};
 
 // --------------------------------------------------------------------- utils
 
@@ -290,7 +295,11 @@ export function SocialProvider({ children }: { children: ReactNode }) {
     };
   }, [ready, live, userId]);
 
-  const userById = useCallback((id: string) => friends.find((u) => u.id === id), [friends]);
+  // Cache every user we've seen so posts from removed friends still show author info.
+  const userCacheRef = useRef<Record<string, SocialUser>>({});
+  friends.forEach((f) => { userCacheRef.current[f.id] = f; });
+
+  const userById = useCallback((id: string) => friends.find((u) => u.id === id) ?? userCacheRef.current[id], [friends]);
 
   const feedPosts = useMemo(() => {
     const visible = new Set([meId, ...friends.map((f) => f.id)]);

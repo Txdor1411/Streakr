@@ -26,6 +26,7 @@ export default function ProfileScreen() {
   const [username, setUsername] = useState(profile.username ?? '');
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(profile.avatar_url);
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(false);
 
   const bg = dark ? '#16161e' : '#f8f7fa';
   const trimmed = name.trim();
@@ -44,6 +45,7 @@ export default function ProfileScreen() {
     if (result.canceled || !result.assets[0]) return;
 
     const uri = result.assets[0].uri;
+    setUploadError(false);
 
     if (!user?.id) {
       setAvatarUrl(uri);
@@ -55,7 +57,7 @@ export default function ProfileScreen() {
       const url = await uploadAvatar(user.id, uri);
       setAvatarUrl(url);
     } catch {
-      setAvatarUrl(uri);
+      setUploadError(true);
     } finally {
       setUploading(false);
     }
@@ -135,6 +137,11 @@ export default function ProfileScreen() {
           <Display size={18} weight="600" style={{ marginTop: 14 }}>
             {trimmed || 'You'}
           </Display>
+          {uploadError && (
+            <Body size={12} style={{ marginTop: 6, color: '#e05252' }}>
+              Photo upload failed — try again
+            </Body>
+          )}
           <Body size={12} secondary style={{ marginTop: 4 }}>
             Tap to change photo
           </Body>

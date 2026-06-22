@@ -49,19 +49,25 @@ export default function ComposeScreen() {
   const onShare = async () => {
     if (!photoUri || sharing) return;
     setSharing(true);
-    const persisted = await preparePhoto(photoUri);
-    const text = caption.trim() || undefined;
+    try {
+      const persisted = await preparePhoto(photoUri);
+      const text = caption.trim() || undefined;
 
-    if (selected) {
-      const baseLog = logFor(selected.id);
-      const log = markDone ? { ...baseLog, [todayKey()]: selected.goal } : baseLog;
-      const streak = computeStreak(selected, log, frozenDates);
-      addPost({ kind: 'habit', habitName: selected.name, habitEmoji: selected.emoji, accent: selected.accent, streak, photoUri: persisted, caption: text });
-      if (markDone) setAmount(selected.id, selected.goal);
-    } else {
-      addPost({ kind: 'free', photoUri: persisted, caption: text });
+      if (selected) {
+        const baseLog = logFor(selected.id);
+        const log = markDone ? { ...baseLog, [todayKey()]: selected.goal } : baseLog;
+        const streak = computeStreak(selected, log, frozenDates);
+        addPost({ kind: 'habit', habitName: selected.name, habitEmoji: selected.emoji, accent: selected.accent, streak, photoUri: persisted, caption: text });
+        if (markDone) setAmount(selected.id, selected.goal);
+      } else {
+        addPost({ kind: 'free', photoUri: persisted, caption: text });
+      }
+      router.back();
+    } catch {
+      setError('Failed to share. Please try again.');
+    } finally {
+      setSharing(false);
     }
-    router.back();
   };
 
   const label = (t: string) => (

@@ -188,10 +188,14 @@ export async function deletePost(id: string): Promise<void> {
 export async function setReaction(userId: string, postId: string, emoji: string, on: boolean): Promise<void> {
   if (!supabase) return;
   if (on) {
-    // Delete any existing reaction first so only one remains per post
-    await supabase.from('reactions').delete().match({ post_id: postId, user_id: userId });
-    const { error } = await supabase.from('reactions').insert({ post_id: postId, user_id: userId, emoji });
+    // Insert first (safe path) — if same emoji already exists the conflict is ignored.
+    // Then remove any other emoji from this user on this post. Failure here is non-critical
+    // (brief duplicate) vs the old delete-first approach which could lose the reaction entirely.
+    const { error } = await supabase
+      .from('reactions')
+      .upsert({ post_id: postId, user_id: userId, emoji }, { onConflict: 'post_id,user_id,emoji', ignoreDuplicates: true });
     if (error) throw error;
+    await supabase.from('reactions').delete().eq('post_id', postId).eq('user_id', userId).neq('emoji', emoji);
   } else {
     const { error } = await supabase.from('reactions').delete().match({ post_id: postId, user_id: userId, emoji });
     if (error) throw error;
