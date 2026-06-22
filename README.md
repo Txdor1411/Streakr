@@ -40,7 +40,23 @@ And I got to work...
 
 The stack used: 
 
-Throughout the process of building this app I have used Claude Code to facilitate the development of the app in a shorter time manner. With this said, I do not consider the app "vibe coded" due to the fact that a lot of time was spent on manually checking and correcting any mistakes made by Claude.
+Framework:
+
+- React Native w/ TypeScript
+- Expo (SDK 55) + Expo-router
+
+Backend:
+
+- Supabase
+- Expo auth for google & apple
+- React Native Async Storage
+
+& many more libraries for ui & ux ...
+
+If you have any questions, do not hesitate to contact me!
+
+Important notice:
+Throughout the building process I have used Claude Code to facilitate the development of the app in a shorter time manner. With this said, I do not consider the app "vibe coded" due to the fact that a lot of time was spent on manually checking and correcting any mistakes made by Claude.
 
 
 
