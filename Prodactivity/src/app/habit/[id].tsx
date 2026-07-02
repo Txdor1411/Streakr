@@ -4,7 +4,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Glass } from '@/components/glass';
-import { Heatmap, HeatmapLegend } from '@/components/heatmap';
+import { Heatmap, HeatmapLegend, UNSCHEDULED_LEVEL } from '@/components/heatmap';
 import { CheckIcon, ChevronLeft } from '@/components/icons';
 import { StreakFlame } from '@/components/streak-flame';
 import { Body, Display } from '@/components/text';
@@ -97,11 +97,12 @@ export default function HabitDetailScreen() {
     const amount = log[dk] ?? 0;
     const complete = amount >= habit.goal;
     const wd = weekdayMon0(d);
+    const scheduled = habit.days[wd];
     // A frozen cell: day is in frozenDates, habit was scheduled, and not yet completed.
-    const isFrozen = !complete && frozenDates.has(dk) && habit.days[wd];
+    const isFrozen = !complete && frozenDates.has(dk) && scheduled;
     if (isFrozen) hasFrozenDays = true;
-    levels.push(isFrozen ? -1 : levelFor(habit, amount));
-    if (habit.days[wd]) {
+    levels.push(!scheduled ? UNSCHEDULED_LEVEL : isFrozen ? -1 : levelFor(habit, amount));
+    if (scheduled) {
       weekdayTotals[wd]++;
       if (complete || isFrozen) weekdayHits[wd]++;
     }

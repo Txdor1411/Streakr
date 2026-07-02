@@ -7,6 +7,10 @@ import { Palette, shade } from '@/design/tokens';
 /** Ice-blue used for frozen (protected) cells. */
 const FREEZE_COLOR = Palette.freeze + '99';
 
+/** Sentinel level meaning "not scheduled that day" — dimmer than a missed day. */
+export const UNSCHEDULED_LEVEL = -2;
+const UNSCHEDULED_OPACITY = 0.35;
+
 type HeatmapProps = {
   levels: number[];
   accent: string;
@@ -71,12 +75,15 @@ export function Heatmap({
                 flex: 1,
                 aspectRatio: 1,
                 borderRadius: radius,
+                opacity: level === UNSCHEDULED_LEVEL ? UNSCHEDULED_OPACITY : 1,
                 backgroundColor:
                   level == null
                     ? 'transparent'
                     : level === -1
                       ? FREEZE_COLOR
-                      : shade(theme, accent, level),
+                      : level === UNSCHEDULED_LEVEL
+                        ? theme.heatmapEmpty
+                        : shade(theme, accent, level),
               }}
             />
           ))}

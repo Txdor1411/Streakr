@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { CheckIcon, CloseIcon, PlusIcon } from '@/components/icons';
+import { CheckIcon, CloseIcon } from '@/components/icons';
 import { Segmented } from '@/components/segmented';
 import { Body, Display } from '@/components/text';
 import { useStore, type HabitType } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { HabitColors, Palette, tint } from '@/design/tokens';
+import { useWeekStart } from '@/design/week-start';
 
 const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const EMOJIS = ['💧', '🧘', '🏃', '📚', '🥗', '💪', '🛏️', '🧠', '🎯', '✍️', '🎸', '💊', '☀️', '🚭', '🧹', '💰'];
@@ -22,6 +23,8 @@ export default function CreateHabitScreen() {
   const insets = useSafeAreaInsets();
   const dark = theme.scheme === 'dark';
   const { addHabit } = useStore();
+  const { weekStart } = useWeekStart();
+  const dayOrder = weekStart === 'sunday' ? [6, 0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6];
 
   const [name, setName] = useState('');
   const [emoji, setEmoji] = useState('💧');
@@ -128,9 +131,6 @@ export default function CreateHabitScreen() {
               {color === c && <CheckIcon size={15} width={3.2} />}
             </Pressable>
           ))}
-          <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: theme.fillStrong, alignItems: 'center', justifyContent: 'center' }}>
-            <PlusIcon size={16} color={theme.textMuted} width={2.4} />
-          </View>
         </View>
 
         {/* Type */}
@@ -188,7 +188,7 @@ export default function CreateHabitScreen() {
         {/* Schedule */}
         {label('Schedule')}
         <View style={{ flexDirection: 'row', gap: 7, marginBottom: 22 }}>
-          {DAYS.map((d, i) => {
+          {dayOrder.map((i) => {
             const on = days[i];
             return (
               <Pressable
@@ -196,7 +196,7 @@ export default function CreateHabitScreen() {
                 onPress={() => setDays((prev) => prev.map((p, j) => (j === i ? !p : p)))}
                 style={{ flex: 1, aspectRatio: 1, borderRadius: 11, backgroundColor: on ? color : theme.fillStrong, alignItems: 'center', justifyContent: 'center' }}>
                 <Body size={13} weight="700" color={on ? '#fff' : theme.textMuted}>
-                  {d}
+                  {DAYS[i]}
                 </Body>
               </Pressable>
             );

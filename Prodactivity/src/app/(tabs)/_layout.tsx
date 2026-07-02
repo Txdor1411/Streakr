@@ -13,8 +13,6 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" />
       <Tabs.Screen name="habits" />
       <Tabs.Screen name="feed" />
-      {/* Goals tab temporarily hidden — file kept in (tabs)/goals.tsx for later */}
-      <Tabs.Screen name="goals" options={{ href: null }} />
       <Tabs.Screen name="insights" />
       <Tabs.Screen name="settings" />
     </Tabs>

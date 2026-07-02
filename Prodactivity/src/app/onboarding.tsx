@@ -1,23 +1,20 @@
 /**
- * First-run onboarding: welcome → profile (name/emoji/@username) → account.
+ * First-run onboarding: welcome → profile (name/emoji/@username).
  *
- * Optional by design — every step can be skipped and the app stays fully
- * local-first. Finishing saves the profile and flips the persisted onboarding
- * flag, which swaps the route gate (see `_layout.tsx`) over to the tabs.
+ * Finishing saves the profile and flips the persisted onboarding flag, which
+ * swaps the route gate (see `_layout.tsx`) over to the sign-in gate — Streakr
+ * is a social app and requires an account beyond this point.
  */
-import { useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Wallpaper } from '@/components/wallpaper';
-import { CheckIcon } from '@/components/icons';
 import { Body, Display } from '@/components/text';
-import { useAuth } from '@/design/auth';
 import { useOnboarding } from '@/design/onboarding';
 import { useStore } from '@/design/store';
 import { useTheme } from '@/design/theme';
-import { Palette, tint } from '@/design/tokens';
+import { tint } from '@/design/tokens';
 
 const AVATARS = ['🦊', '🐼', '🐯', '🦁', '🐸', '🐧', '🦉', '🐲', '🌟', '🚀', '🔥', '🌈', '🧠', '💪', '🌱', '⚡️'];
 
@@ -29,11 +26,9 @@ const FEATURES: { emoji: string; title: string; sub: string }[] = [
 
 export default function OnboardingScreen() {
   const theme = useTheme();
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const dark = theme.scheme === 'dark';
   const { profile, setProfile } = useStore();
-  const { configured, session, user } = useAuth();
   const { complete } = useOnboarding();
 
   const [step, setStep] = useState(0);
@@ -48,11 +43,6 @@ export default function OnboardingScreen() {
     setProfile({ name: trimmed || profile.name, emoji, ...(handle ? { username: handle } : null) });
     complete();
   }, [trimmed, profile.name, emoji, handle, setProfile, complete]);
-
-  // Auto-complete when the user finishes OAuth sign-in while on step 2.
-  useEffect(() => {
-    if (session && step === 2) finish();
-  }, [session, step, finish]);
 
   const accent = theme.accent;
   const inputStyle = {
@@ -83,11 +73,11 @@ export default function OnboardingScreen() {
         {/* Top bar: progress dots + skip */}
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 36 }}>
           <View style={{ flexDirection: 'row', gap: 6 }}>
-            {[0, 1, 2].map((i) => (
+            {[0, 1].map((i) => (
               <View key={i} style={{ width: i === step ? 22 : 7, height: 7, borderRadius: 4, backgroundColor: i === step ? accent : theme.fillStrong }} />
             ))}
           </View>
-          {step < 2 && (
+          {step < 1 && (
             <Pressable onPress={finish} hitSlop={8}>
               <Body size={14} weight="600" color={theme.textSecondary}>
                 Skip
@@ -200,64 +190,10 @@ export default function OnboardingScreen() {
           </ScrollView>
         )}
 
-        {/* Step 2 — Account */}
-        {step === 2 && (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingVertical: 20 }}>
-            <View style={{ alignItems: 'center', marginBottom: 26 }}>
-              <View style={{ width: 80, height: 80, borderRadius: 24, backgroundColor: tint(Palette.water, dark ? '33' : '22'), alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                <Body size={40}>{session ? '✅' : '☁️'}</Body>
-              </View>
-              <Display size={24} weight="700" style={{ textAlign: 'center' }}>
-                {session ? "You're all set" : 'Sync & add friends'}
-              </Display>
-              <Body size={14} secondary style={{ textAlign: 'center', marginTop: 8, lineHeight: 21 }}>
-                {session
-                  ? `Signed in as ${user?.email ?? 'your account'}. Your habits back up and friends can find you.`
-                  : 'Create an account to back up your habits across devices and connect with friends. You can also keep everything on this device.'}
-              </Body>
-            </View>
-
-            {!configured && (
-              <View style={{ padding: 13, borderRadius: 14, backgroundColor: tint(Palette.coral, '1f'), marginBottom: 16 }}>
-                <Body size={12.5} color={Palette.coral} weight="600">
-                  Backend not configured — running local-only. Add Supabase keys to .env.local to enable accounts.
-                </Body>
-              </View>
-            )}
-
-            {!session && configured && (
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 9, marginBottom: 16, paddingHorizontal: 4 }}>
-                <CheckIcon size={16} width={2.6} color={Palette.emerald} />
-                <Body size={12.5} secondary style={{ flex: 1 }}>
-                  Sign-in is optional — the app works fully offline without an account.
-                </Body>
-              </View>
-            )}
-          </ScrollView>
-        )}
-
         {/* Bottom actions */}
         <View style={{ gap: 12, paddingTop: 12 }}>
           {step === 0 && primaryButton('Get started', () => setStep(1))}
-
-          {step === 1 && primaryButton('Continue', () => setStep(2))}
-
-          {step === 2 && (
-            <>
-              {session
-                ? primaryButton('Start using Streakr', finish)
-                : configured
-                  ? primaryButton('Sign in or create account', () => router.push('/auth'))
-                  : primaryButton('Get started', finish)}
-              {!session && configured && (
-                <Pressable onPress={finish} style={{ height: 50, alignItems: 'center', justifyContent: 'center' }}>
-                  <Body size={14.5} weight="600" color={theme.textSecondary}>
-                    Maybe later
-                  </Body>
-                </Pressable>
-              )}
-            </>
-          )}
+          {step === 1 && primaryButton('Continue', finish)}
         </View>
       </View>
     </Wallpaper>

@@ -26,16 +26,6 @@ export function HabitsIcon({ size = 22, color }: IconProps) {
   );
 }
 
-/** Goals — target rings. */
-export function GoalsIcon({ size = 22, color }: IconProps) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}>
-      <Circle cx="12" cy="12" r="8.5" />
-      <Circle cx="12" cy="12" r="4" />
-    </Svg>
-  );
-}
-
 /** Insights — ascending bars. */
 export function InsightsIcon({ size = 22, color }: IconProps) {
   return (

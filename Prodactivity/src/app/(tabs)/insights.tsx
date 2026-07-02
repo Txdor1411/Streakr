@@ -11,6 +11,7 @@ import { Body, Display } from '@/components/text';
 import { dateKey, useStore, weekdayMon0 } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
+import { useWeekStart } from '@/design/week-start';
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const RANGE_DAYS = { W: 7, M: 30, Y: 365 } as const;
@@ -32,6 +33,7 @@ export default function InsightsScreen() {
   const [range, setRange] = useState<Range>('W');
   const stroke = theme.accent;
   const { habits, logFor, frozenDates } = useStore();
+  const { weekStart } = useWeekStart();
 
   const data = useMemo(() => {
     const habitLogs = habits.map((h) => ({ h, log: logFor(h.id) }));
@@ -110,11 +112,12 @@ export default function InsightsScreen() {
       axis = [fmt(window[0].date), fmt(window[Math.floor(window.length / 2)].date), fmt(window[window.length - 1].date)];
     }
 
-    // By weekday: mean completion rate per weekday across the window.
-    const weekday = WEEKDAY_LABELS.map((label, wd) => {
+    // By weekday: mean completion rate per weekday across the window, ordered per the week-start preference.
+    const weekdayOrder = weekStart === 'sunday' ? [6, 0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6];
+    const weekday = weekdayOrder.map((wd) => {
       const days = window.filter((d) => weekdayMon0(d.date) === wd && d.rate != null) as (DayStat & { rate: number })[];
       const v = days.length ? (days.reduce((a, d) => a + d.rate, 0) / days.length) * 100 : 0;
-      return { d: label, v: Math.round(v) };
+      return { d: WEEKDAY_LABELS[wd], v: Math.round(v) };
     });
 
     // Consistency: last 98 days density + % of days active.
@@ -123,7 +126,7 @@ export default function InsightsScreen() {
     const activePct = Math.round((density.filter((d) => d.active).length / DENSITY_DAYS) * 100);
 
     return { momentum, curAvg, avgDelta, trend, axis, weekday, densityLevels, activePct };
-  }, [habits, logFor, frozenDates, range]);
+  }, [habits, logFor, frozenDates, range, weekStart]);
 
   const rising = data.momentum >= 0;
   const trendPoints = data.trend.length > 1 ? data.trend.map((v, i) => `${((i / (data.trend.length - 1)) * 300).toFixed(1)},${(96 - (Math.max(0, Math.min(100, v)) / 100) * 82).toFixed(1)}`).join(' ') : '0,96 300,96';

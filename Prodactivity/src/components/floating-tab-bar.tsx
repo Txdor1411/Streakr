@@ -38,12 +38,12 @@ function TabItem({
   onPress: () => void;
 }) {
   const Icon = ICONS[route.name];
-  if (!Icon) return null;
   const scale = useSharedValue(focused ? 1.06 : 1);
   useEffect(() => {
     scale.value = withTiming(focused ? 1.06 : 1, { duration: 180, easing: Easing.out(Easing.quad) });
-  }, [focused]);
+  }, [focused, scale]);
   const animStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  if (!Icon) return null;
   return (
     <Pressable onPress={onPress} style={styles.item} hitSlop={6}>
       <Animated.View style={[{ alignItems: 'center', gap: 3 }, animStyle]}>

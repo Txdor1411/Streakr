@@ -1,11 +1,9 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Glass } from '@/components/glass';
-import { Heatmap } from '@/components/heatmap';
+import { Heatmap, UNSCHEDULED_LEVEL } from '@/components/heatmap';
 import { Screen } from '@/components/screen';
-import { Segmented } from '@/components/segmented';
 import { Body, Display } from '@/components/text';
 import { computeStreak, dateKey, useStore, weekdayMon0, type HabitDef } from '@/design/store';
 import { useTheme } from '@/design/theme';
@@ -22,11 +20,13 @@ function summarize(habit: HabitDef, log: Record<string, number>) {
   for (let i = MOSAIC_DAYS - 1; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(now.getDate() - i);
+    const isScheduled = habit.days[weekdayMon0(d)];
     const amount = log[dateKey(d)] ?? 0;
-    if (amount <= 0) levels.push(0);
+    if (!isScheduled) levels.push(UNSCHEDULED_LEVEL);
+    else if (amount <= 0) levels.push(0);
     else if (habit.type === 'count') levels.push(Math.max(1, Math.min(4, Math.ceil((amount / habit.goal) * 4))));
     else levels.push(4);
-    if (habit.days[weekdayMon0(d)]) {
+    if (isScheduled) {
       scheduled++;
       if (amount >= habit.goal) hits++;
     }
@@ -38,21 +38,17 @@ function summarize(habit: HabitDef, log: Record<string, number>) {
 export default function HabitsScreen() {
   const theme = useTheme();
   const router = useRouter();
-  const [mode, setMode] = useState('Mosaic');
   const { habits, logFor } = useStore();
 
   return (
     <Screen>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-        <View>
-          <Display size={25} weight="600">
-            All habits
-          </Display>
-          <Body size={13} secondary style={{ marginTop: 6 }}>
-            {habits.length} active · last 180 days
-          </Body>
-        </View>
-        <Segmented options={['Mosaic', 'List']} value={mode} onChange={setMode} />
+      <View>
+        <Display size={25} weight="600">
+          All habits
+        </Display>
+        <Body size={13} secondary style={{ marginTop: 6 }}>
+          {habits.length} active · last 180 days
+        </Body>
       </View>
 
       {habits.length === 0 ? (
@@ -93,11 +89,7 @@ export default function HabitsScreen() {
                       🔥 {streak} · {pct}%
                     </Body>
                   </View>
-                  {mode === 'Mosaic' ? (
-                    <Heatmap levels={levels} accent={h.accent} columns={30} gap={2} radius={1.5} />
-                  ) : (
-                    <Heatmap levels={levels.slice(-30)} accent={h.accent} columns={30} gap={2} radius={3} />
-                  )}
+                  <Heatmap levels={levels} accent={h.accent} columns={30} gap={2} radius={1.5} />
                 </Glass>
               </Pressable>
             );

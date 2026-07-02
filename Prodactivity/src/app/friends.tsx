@@ -1,6 +1,6 @@
 ﻿import { useRouter } from 'expo-router';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Pressable, ScrollView, TextInput, View } from 'react-native';
+import { Image, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CheckIcon, CloseIcon, PlusIcon } from '@/components/icons';
@@ -14,7 +14,7 @@ export default function FriendsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const dark = theme.scheme === 'dark';
-  const { live, friends, incoming, outgoing, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge } = useSocial();
+  const { friends, incoming, outgoing, searchUsers, requestFriend, acceptRequest, removeRequest, removeFriend, nudge } = useSocial();
   const [toast, setToast] = useState<string | null>(null);
 
   const [query, setQuery] = useState('');
@@ -28,9 +28,8 @@ export default function FriendsScreen() {
     setTimeout(() => setToast((t) => (t === msg ? null : t)), 2000);
   };
 
-  // Debounced @username search (live mode only).
+  // Debounced @username search.
   useEffect(() => {
-    if (!live) return;
     const q = query.trim();
     if (!q) {
       setResults([]);
@@ -53,7 +52,7 @@ export default function FriendsScreen() {
       alive = false;
       clearTimeout(t);
     };
-  }, [query, live, searchUsers]);
+  }, [query, searchUsers]);
 
   const onNudge = (f: SocialUser) => {
     nudge(f.id);
@@ -64,12 +63,16 @@ export default function FriendsScreen() {
     requestFriend(u);
     setQuery('');
     setResults([]);
-    showToast(live ? `Request sent to ${u.name}` : `Added ${u.name}`);
+    showToast(`Request sent to ${u.name}`);
   };
 
   const avatar = (u: SocialUser) => (
-    <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: tint(u.accent, dark ? '33' : '24'), alignItems: 'center', justifyContent: 'center' }}>
-      <Body size={22}>{u.emoji}</Body>
+    <View style={{ width: 44, height: 44, borderRadius: 22, overflow: 'hidden', backgroundColor: tint(u.accent, dark ? '33' : '24'), alignItems: 'center', justifyContent: 'center' }}>
+      {u.avatar_url ? (
+        <Image source={{ uri: u.avatar_url }} style={{ width: 44, height: 44 }} />
+      ) : (
+        <Body size={22}>{u.emoji}</Body>
+      )}
     </View>
   );
 
@@ -115,8 +118,8 @@ export default function FriendsScreen() {
           </Pressable>
         </View>
 
-        {/* Incoming requests (live) */}
-        {live && incoming.length > 0 && (
+        {/* Incoming requests */}
+        {incoming.length > 0 && (
           <>
             {label(`Requests · ${incoming.length}`)}
             <View style={{ gap: 9 }}>
@@ -152,7 +155,7 @@ export default function FriendsScreen() {
         {label(`Your friends · ${friends.length}`)}
         {friends.length === 0 ? (
           <Body size={13} secondary style={{ marginBottom: 12 }}>
-            No friends yet — {live ? 'search for someone below' : 'add a few below'} to start sharing proof.
+            No friends yet — search for someone below to start sharing proof.
           </Body>
         ) : (
           <View style={{ gap: 9 }}>
@@ -176,8 +179,8 @@ export default function FriendsScreen() {
           </View>
         )}
 
-        {/* Outgoing pending (live) */}
-        {live && outgoing.length > 0 && (
+        {/* Outgoing pending */}
+        {outgoing.length > 0 && (
           <>
             {label('Pending')}
             <View style={{ gap: 9 }}>
@@ -198,35 +201,31 @@ export default function FriendsScreen() {
           </>
         )}
 
-        {/* Discovery: search by @username (live only) */}
-        {live && (
-          <>
-            {label('Add by username')}
-            <TextInput
-              value={query}
-              onChangeText={setQuery}
-              placeholder="Search @username"
-              placeholderTextColor={theme.textMuted}
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={{ backgroundColor: theme.fill, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 13, fontFamily: 'Batica', fontSize: 15, fontWeight: '500', color: theme.textStrong, marginBottom: 12 }}
-            />
-            {query.trim().length > 0 && (
-              <View style={{ gap: 9 }}>
-                {searching ? (
-                  <Body size={13} secondary>
-                    Searching…
-                  </Body>
-                ) : results.length === 0 ? (
-                  <Body size={13} secondary>
-                    No one found for "{query.trim()}".
-                  </Body>
-                ) : (
-                  results.map((u) => row(u, addButton(u)))
-                )}
-              </View>
+        {/* Discovery: search by @username */}
+        {label('Add by username')}
+        <TextInput
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search @username"
+          placeholderTextColor={theme.textMuted}
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={{ backgroundColor: theme.fill, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 13, fontFamily: 'Batica', fontSize: 15, fontWeight: '500', color: theme.textStrong, marginBottom: 12 }}
+        />
+        {query.trim().length > 0 && (
+          <View style={{ gap: 9 }}>
+            {searching ? (
+              <Body size={13} secondary>
+                Searching…
+              </Body>
+            ) : results.length === 0 ? (
+              <Body size={13} secondary>
+                No one found for &quot;{query.trim()}&quot;.
+              </Body>
+            ) : (
+              results.map((u) => row(u, addButton(u)))
             )}
-          </>
+          </View>
         )}
       </ScrollView>
 

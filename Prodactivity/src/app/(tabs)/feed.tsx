@@ -9,7 +9,6 @@ import { CameraIcon, CloseIcon, UsersIcon } from '@/components/icons';
 import { PostCard } from '@/components/post-card';
 import { Screen } from '@/components/screen';
 import { Body, Display } from '@/components/text';
-import { useAuth } from '@/design/auth';
 import { useSocial, type SocialUser } from '@/design/social';
 import { useStore } from '@/design/store';
 import { useTheme } from '@/design/theme';
@@ -19,53 +18,12 @@ export default function FeedScreen() {
   const theme = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { configured } = useAuth();
   const { profile } = useStore();
-  const { live, feedPosts, friends, unseenNudges, userById, nudge, markNudgesSeen, meId } = useSocial();
+  const { feedPosts, friends, unseenNudges, userById, nudge, markNudgesSeen, meId } = useSocial();
   const [toast, setToast] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  const dark = theme.scheme === 'dark';
-
-  // Auth guard: the social feed needs a real account. Signed out (or no backend
-  // configured) → prompt to sign in instead of showing demo data.
-  if (!live) {
-    return (
-      <Screen>
-        <Display size={26} weight="600">
-          Feed
-        </Display>
-        <Body size={13} secondary style={{ marginTop: 6 }}>
-          Share your progress and cheer on friends.
-        </Body>
-
-        <Glass radius={24} style={{ padding: 26, alignItems: 'center', gap: 10, marginTop: 24 }}>
-          <View style={{ width: 72, height: 72, borderRadius: 22, backgroundColor: tint(theme.accent, dark ? '33' : '22'), alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
-            <Body size={36}>🤝</Body>
-          </View>
-          <Display size={18} weight="600" style={{ textAlign: 'center' }}>
-            Connect with friends
-          </Display>
-          <Body size={13.5} secondary style={{ textAlign: 'center', lineHeight: 20 }}>
-            {configured
-              ? 'Sign in to add friends, post proof of your habits, and keep each other accountable.'
-              : 'Accounts aren’t enabled in this build. Add your Supabase keys to .env.local to turn on the social feed.'}
-          </Body>
-          {configured && (
-            <Pressable
-              onPress={() => router.push('/auth')}
-              style={{ height: 52, borderRadius: 16, backgroundColor: theme.accent, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 28, marginTop: 8, shadowColor: theme.accent, shadowOpacity: 0.5, shadowRadius: 14, shadowOffset: { width: 0, height: 10 } }}>
-              <Display size={15.5} weight="600" color="#fff">
-                Sign in or create account
-              </Display>
-            </Pressable>
-          )}
-        </Glass>
-      </Screen>
-    );
-  }
-
-  const me: SocialUser = { id: meId, name: profile.name, emoji: profile.emoji, accent: theme.accent };
+  const me: SocialUser = { id: meId, name: profile.name, emoji: profile.emoji, accent: theme.accent, avatar_url: profile.avatar_url };
   const authorFor = (id: string): SocialUser => (id === meId ? me : userById(id) ?? { id, name: 'Someone', emoji: '👤', accent: theme.accent });
 
   const showToast = (msg: string) => {

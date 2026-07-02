@@ -26,8 +26,12 @@ export function PostCard({ post, author, onNudge }: PostCardProps) {
     <Glass radius={24} style={{ padding: 13, gap: 11 }}>
       {/* Author */}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-        <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: tint(author.accent, dark ? '33' : '24'), alignItems: 'center', justifyContent: 'center' }}>
-          <Body size={20}>{author.emoji}</Body>
+        <View style={{ width: 40, height: 40, borderRadius: 20, overflow: 'hidden', backgroundColor: tint(author.accent, dark ? '33' : '24'), alignItems: 'center', justifyContent: 'center' }}>
+          {author.avatar_url ? (
+            <Image source={{ uri: author.avatar_url }} style={{ width: 40, height: 40 }} contentFit="cover" />
+          ) : (
+            <Body size={20}>{author.emoji}</Body>
+          )}
         </View>
         <View style={{ flex: 1 }}>
           <Display size={14.5} weight="600">

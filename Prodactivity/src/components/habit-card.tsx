@@ -7,7 +7,7 @@ import { CheckIcon } from '@/components/icons';
 import { ProgressRing } from '@/components/progress-ring';
 import { Body, Display } from '@/components/text';
 import { useTheme } from '@/design/theme';
-import type { Habit } from '@/design/data';
+import type { HabitView } from '@/design/store';
 import { tint } from '@/design/tokens';
 
 /** Circular log button with done / count-ring / empty states. */
@@ -16,7 +16,7 @@ export function LogButton({
   onPress,
   size = 50,
 }: {
-  habit: Habit;
+  habit: HabitView;
   onPress: () => void;
   size?: number;
 }) {
@@ -103,7 +103,7 @@ export function HabitCard({
   subtitle,
   onLog,
 }: {
-  habit: Habit;
+  habit: HabitView;
   subtitle: string;
   onLog: () => void;
 }) {

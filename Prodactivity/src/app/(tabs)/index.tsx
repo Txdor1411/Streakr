@@ -1,6 +1,6 @@
 import { useEffect, useMemo, type ReactNode } from 'react';
 import { useRouter } from 'expo-router';
-import { Pressable, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withDelay, withTiming, Easing } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,9 +11,10 @@ import { PlusIcon } from '@/components/icons';
 import { HabitCard } from '@/components/habit-card';
 import { Screen } from '@/components/screen';
 import { Body, Display } from '@/components/text';
-import { dateKey, useStore, weekdayMon0, type HabitView } from '@/design/store';
+import { addDays, dateKey, useStore, weekStartDate, weekdayMon0, type HabitView } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
+import { useWeekStart } from '@/design/week-start';
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -46,6 +47,7 @@ export default function TodayScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { profile, habitsForDay, logHabit, frozenDates, freezes, freezeDay } = useStore();
+  const { weekStart } = useWeekStart();
 
   const firstName = profile.name.trim().split(/\s+/)[0] || 'there';
   const avatarScale = useSharedValue(1);
@@ -64,17 +66,16 @@ export default function TodayScreen() {
   const ydMissed = ydHabits.some((h) => !h.done);
   const canFreezeYesterday = freezes > 0 && !frozenDates.has(ydKey) && ydMissed;
 
-  // This week's strip (Mon→Sun), with a "perfect day" dot.
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - todayIdx);
-  const week = WEEKDAY_LABELS.map((label, i) => {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
+  // This week's strip, ordered per the week-start preference, with a "perfect day" dot.
+  const weekBegin = weekStartDate(now, weekStart);
+  const week = Array.from({ length: 7 }, (_, i) => {
+    const d = addDays(weekBegin, i);
     const dk = dateKey(d);
-    const dayHabits = habitsForDay(dk).filter((h) => h.days[i]);
+    const wd = weekdayMon0(d);
+    const dayHabits = habitsForDay(dk).filter((h) => h.days[wd]);
     const done = dayHabits.length > 0 && dayHabits.every((h) => h.done);
     const frozen = frozenDates.has(dk) && dayHabits.some((h) => !h.done);
-    return { d: label, n: d.getDate(), done, frozen, today: i === todayIdx };
+    return { d: WEEKDAY_LABELS[wd], n: d.getDate(), done, frozen, today: wd === todayIdx };
   });
 
   // Today's scheduled habits.
@@ -125,11 +126,16 @@ export default function TodayScreen() {
                 width: 46,
                 height: 46,
                 borderRadius: 23,
+                overflow: 'hidden',
                 backgroundColor: theme.scheme === 'dark' ? '#4a3f5a' : '#FFCFA0',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Body size={24}>{profile.emoji}</Body>
+              {profile.avatar_url ? (
+                <Image source={{ uri: profile.avatar_url }} style={{ width: 46, height: 46 }} />
+              ) : (
+                <Body size={24}>{profile.emoji}</Body>
+              )}
             </Pressable>
           </Animated.View>
         </View>

@@ -1,11 +1,11 @@
 # Graph Report - Prodactivity  (2026-07-02)
 
 ## Corpus Check
-- 64 files · ~81,984 words
+- 66 files · ~83,326 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 437 nodes · 840 edges · 29 communities (24 shown, 5 thin omitted)
+- 458 nodes · 873 edges · 30 communities (24 shown, 6 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
@@ -24,7 +24,7 @@
 - [[_COMMUNITY_Project Docs & Context|Project Docs & Context]]
 - [[_COMMUNITY_App Layout & Auth Context|App Layout & Auth Context]]
 - [[_COMMUNITY_Dev Tooling|Dev Tooling]]
-- [[_COMMUNITY_Community 9|Community 9]]
+- [[_COMMUNITY_Habit Data Schema|Habit Data Schema]]
 - [[_COMMUNITY_Project Reset Scripts|Project Reset Scripts]]
 - [[_COMMUNITY_Tab Navigation Icons|Tab Navigation Icons]]
 - [[_COMMUNITY_TypeScript Config|TypeScript Config]]
@@ -40,30 +40,31 @@
 - [[_COMMUNITY_Community 25|Community 25]]
 - [[_COMMUNITY_Community 26|Community 26]]
 - [[_COMMUNITY_Community 27|Community 27]]
+- [[_COMMUNITY_Community 31|Community 31]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useTheme()` - 52 edges
+1. `useTheme()` - 54 edges
 2. `useStore()` - 25 edges
-3. `Body()` - 20 edges
-4. `Display()` - 18 edges
+3. `Body()` - 21 edges
+4. `Display()` - 19 edges
 5. `useAuth()` - 17 edges
 6. `Supabase backend` - 15 edges
 7. `expo` - 13 edges
-8. `Glass()` - 11 edges
+8. `Glass()` - 12 edges
 9. `dateKey()` - 11 edges
 10. `weekdayMon0()` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Memory Index` --references--> `Supabase backend`  [EXTRACTED]
   memory/MEMORY.md → Prodactivity/supabase/README.md
+- `AppSplash()` --calls--> `useTheme()`  [EXTRACTED]
+  Prodactivity/src/app/_layout.tsx → Prodactivity/src/design/theme.tsx
+- `SkeletonBone()` --calls--> `useTheme()`  [EXTRACTED]
+  Prodactivity/src/components/loading-skeletons.tsx → Prodactivity/src/design/theme.tsx
 - `Graphify Knowledge Graph Instructions` --references--> `Prodactivity Expo App`  [EXTRACTED]
   CLAUDE.md → Prodactivity/README.md
-- `FeedScreen()` --calls--> `useAuth()`  [EXTRACTED]
-  Prodactivity/src/app/(tabs)/feed.tsx → Prodactivity/src/design/auth.tsx
-- `FeedScreen()` --calls--> `useTheme()`  [EXTRACTED]
-  Prodactivity/src/app/(tabs)/feed.tsx → Prodactivity/src/design/theme.tsx
-- `HabitsScreen()` --calls--> `useStore()`  [EXTRACTED]
-  Prodactivity/src/app/(tabs)/habits.tsx → Prodactivity/src/design/store.tsx
+- `GoalsScreen()` --calls--> `useTheme()`  [EXTRACTED]
+  Prodactivity/src/app/(tabs)/goals.tsx → Prodactivity/src/design/theme.tsx
 
 ## Import Cycles
 - None detected.
@@ -82,27 +83,27 @@
 - **All Home Icon Resolution Variants** — tabicons_home_home_tab_icon, tabicons_home2x_home_tab_icon_2x, tabicons_home3x_home_tab_icon_3x [INFERRED 0.95]
 - **All Tab Bar Navigation Icons** — tabicons_explore_explore_tab_icon, tabicons_home_home_tab_icon, tabicons_tab_navigation_bar [INFERRED 0.85]
 
-## Communities (29 total, 5 thin omitted)
+## Communities (30 total, 6 thin omitted)
 
 ### Community 0 - "Screens & Auth Flows"
-Cohesion: 0.06
-Nodes (46): CreateHabitScreen(), DAYS, EMOJIS, TYPE_MAP, TypeLabel, AppSplash(), Glass(), GlassProps (+38 more)
+Cohesion: 0.07
+Nodes (62): AuthScreen(), Mode, ComposeScreen(), CreateHabitScreen(), DAYS, EMOJIS, TYPE_MAP, TypeLabel (+54 more)
 
 ### Community 1 - "Habit Tracking & State"
-Cohesion: 0.13
-Nodes (21): COLORS, Confetti(), Piece, { width: SCREEN_W, height: SCREEN_H }, StreakFlame(), StreakFlameProps, addDays(), computeBestStreak() (+13 more)
+Cohesion: 0.07
+Nodes (46): COLORS, Confetti(), Piece, { width: SCREEN_W, height: SCREEN_H }, StreakFlame(), StreakFlameProps, addDays(), ALL_DAYS (+38 more)
 
 ### Community 2 - "Social Feed & Friends"
 Cohesion: 0.07
-Nodes (34): PostCard(), PostCardProps, Cached, FriendRequest, NewPost, Nudge, Persisted, Post (+26 more)
+Nodes (34): Cached, FriendRequest, FRIENDS, NewPost, Nudge, Persisted, Post, REACTION_EMOJIS (+26 more)
 
 ### Community 3 - "Expo Dependencies"
 Cohesion: 0.05
 Nodes (37): dependencies, expo, expo-apple-authentication, expo-auth-session, expo-blur, expo-constants, expo-crypto, expo-device (+29 more)
 
 ### Community 4 - "Data Import & Preview"
-Cohesion: 0.08
-Nodes (28): ComposeScreen(), FriendsScreen(), ImportScreen(), FloatingTabBar(), ICONS, LABELS, styles, TabRoute (+20 more)
+Cohesion: 0.09
+Nodes (18): FloatingTabBar(), ICONS, LABELS, styles, TabRoute, ArrowRight(), ChevronLeft(), ChevronRight() (+10 more)
 
 ### Community 5 - "App Config & Icons"
 Cohesion: 0.07
@@ -113,16 +114,16 @@ Cohesion: 0.09
 Nodes (27): Expo Go (Play Store), Memory Index, Expo Versioned Docs Requirement, Graphify Knowledge Graph Instructions, Prodactivity Expo App, 0001_init.sql Migration, 0002_social.sql Migration, are_friends() Security-Definer Helper (+19 more)
 
 ### Community 7 - "App Layout & Auth Context"
-Cohesion: 0.08
-Nodes (28): AuthScreen(), Mode, Navigator(), AVATARS, FEATURES, OnboardingScreen(), AVATARS, ProfileScreen() (+20 more)
+Cohesion: 0.07
+Nodes (24): AppSplash(), Navigator(), AVATARS, FEATURES, OnboardingScreen(), ScreenProps, styles, Wallpaper() (+16 more)
 
 ### Community 8 - "Dev Tooling"
 Cohesion: 0.12
 Nodes (16): devDependencies, eslint, eslint-config-expo, @types/react, typescript, main, name, private (+8 more)
 
-### Community 9 - "Community 9"
-Cohesion: 0.13
-Nodes (23): ALL_DAYS, Cached, Logs, Profile, SEED_HABITS, SEED_PROFILE, StoreContext, StoreValue (+15 more)
+### Community 10 - "Habit Data Schema"
+Cohesion: 0.17
+Nodes (10): DENSITY_LEVELS, Habit, HabitMeta, HABITS_META, HabitType, MOSAIC_LEVELS, SAMPLE_HABITS, TREND_VALS (+2 more)
 
 ### Community 11 - "Project Reset Scripts"
 Cohesion: 0.22
@@ -165,24 +166,24 @@ Cohesion: 0.29
 Nodes (6): Get a fresh project, Get started, Join the community, Learn more, Other setup steps, Welcome to your Expo app 👋
 
 ## Knowledge Gaps
-- **192 isolated node(s):** `__routes`, `name`, `slug`, `version`, `orientation` (+187 more)
+- **205 isolated node(s):** `__routes`, `name`, `slug`, `version`, `orientation` (+200 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useTheme()` connect `Screens & Auth Flows` to `Habit Tracking & State`, `Social Feed & Friends`, `Data Import & Preview`, `App Layout & Auth Context`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
+- **Why does `useTheme()` connect `Screens & Auth Flows` to `Habit Tracking & State`, `Data Import & Preview`, `Community 31`, `App Layout & Auth Context`?**
+  _High betweenness centrality (0.055) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `Expo Dependencies` to `Dev Tooling`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
-- **Why does `useStore()` connect `Data Import & Preview` to `Screens & Auth Flows`, `Community 9`, `Habit Tracking & State`, `App Layout & Auth Context`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `useStore()` connect `Screens & Auth Flows` to `Habit Tracking & State`, `Data Import & Preview`, `App Layout & Auth Context`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **What connects `__routes`, `name`, `slug` to the rest of the system?**
-  _192 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _205 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Screens & Auth Flows` be split into smaller, more focused modules?**
-  _Cohesion score 0.06298076923076923 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07111372318542462 - nodes in this community are weakly interconnected._
 - **Should `Habit Tracking & State` be split into smaller, more focused modules?**
-  _Cohesion score 0.13054187192118227 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06836055656382335 - nodes in this community are weakly interconnected._
 - **Should `Social Feed & Friends` be split into smaller, more focused modules?**
-  _Cohesion score 0.0743321718931475 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06765327695560254 - nodes in this community are weakly interconnected._

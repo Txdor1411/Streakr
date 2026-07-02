@@ -18,7 +18,7 @@ import { Palette } from './tokens';
 
 // --------------------------------------------------------------------- types
 
-type DbProfile = { id: string; name: string; emoji: string; username: string | null };
+type DbProfile = { id: string; name: string; emoji: string; username: string | null; avatar_url: string | null };
 type DbFriendship = { id: string; requester_id: string; addressee_id: string; status: 'pending' | 'accepted' };
 type DbPost = {
   id: string;
@@ -57,7 +57,7 @@ export function accentFor(id: string): string {
 }
 
 function profileToUser(p: DbProfile): SocialUser {
-  return { id: p.id, name: p.name, emoji: p.emoji, accent: accentFor(p.id) };
+  return { id: p.id, name: p.name, emoji: p.emoji, accent: accentFor(p.id), avatar_url: p.avatar_url ?? undefined };
 }
 
 function rowToPost(r: DbPost): Post {
@@ -114,7 +114,7 @@ export async function pullSocial(userId: string): Promise<SocialSnapshot> {
 
   const usersById = new Map<string, SocialUser>();
   if (otherIds.size) {
-    const profRes = await supabase.from('profiles').select('id, name, emoji, username').in('id', [...otherIds]);
+    const profRes = await supabase.from('profiles').select('id, name, emoji, username, avatar_url').in('id', [...otherIds]);
     if (profRes.error) throw profRes.error;
     for (const p of profRes.data as DbProfile[]) usersById.set(p.id, profileToUser(p));
   }
@@ -150,7 +150,7 @@ export async function searchUsers(userId: string, query: string): Promise<Social
   if (!q) return [];
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, name, emoji, username')
+    .select('id, name, emoji, username, avatar_url')
     .ilike('username', `%${q}%`)
     .neq('id', userId)
     .limit(20);

@@ -1167,7 +1167,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tabs_feed",
-      "community": 4,
+      "community": 0,
       "norm_label": "feed.tsx"
     },
     {
@@ -1177,8 +1177,48 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "tabs_feed_feedscreen",
-      "community": 4,
+      "community": 0,
       "norm_label": "feedscreen()"
+    },
+    {
+      "label": "goals.tsx",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tabs_goals",
+      "community": 0,
+      "norm_label": "goals.tsx"
+    },
+    {
+      "label": "FEATURED",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "tabs_goals_featured",
+      "community": 0,
+      "norm_label": "featured"
+    },
+    {
+      "label": "GOALS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "tabs_goals_goals",
+      "community": 0,
+      "norm_label": "goals"
+    },
+    {
+      "label": "GoalsScreen()",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "tabs_goals_goalsscreen",
+      "community": 0,
+      "norm_label": "goalsscreen()"
     },
     {
       "label": "habits.tsx",
@@ -1447,7 +1487,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "app_layout_appsplash",
-      "community": 0,
+      "community": 7,
       "norm_label": "appsplash()"
     },
     {
@@ -1497,7 +1537,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_auth",
-      "community": 7,
+      "community": 0,
       "norm_label": "auth.tsx"
     },
     {
@@ -1507,7 +1547,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_auth_mode",
-      "community": 7,
+      "community": 0,
       "norm_label": "mode"
     },
     {
@@ -1517,7 +1557,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_auth_authscreen",
-      "community": 7,
+      "community": 0,
       "norm_label": "authscreen()"
     },
     {
@@ -1527,7 +1567,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_compose",
-      "community": 4,
+      "community": 0,
       "norm_label": "compose.tsx"
     },
     {
@@ -1537,7 +1577,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "app_compose_composescreen",
-      "community": 4,
+      "community": 0,
       "norm_label": "composescreen()"
     },
     {
@@ -1607,7 +1647,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_friends",
-      "community": 4,
+      "community": 0,
       "norm_label": "friends.tsx"
     },
     {
@@ -1617,7 +1657,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "app_friends_friendsscreen",
-      "community": 4,
+      "community": 0,
       "norm_label": "friendsscreen()"
     },
     {
@@ -1697,7 +1737,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "app_import_importscreen",
-      "community": 4,
+      "community": 0,
       "norm_label": "importscreen()"
     },
     {
@@ -1747,7 +1787,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_profile",
-      "community": 7,
+      "community": 0,
       "norm_label": "profile.tsx"
     },
     {
@@ -1757,7 +1797,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_profile_avatars",
-      "community": 7,
+      "community": 0,
       "norm_label": "avatars"
     },
     {
@@ -1767,7 +1807,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_profile_profilescreen",
-      "community": 7,
+      "community": 0,
       "norm_label": "profilescreen()"
     },
     {
@@ -2051,10 +2091,20 @@
       "norm_label": "habitsicon()"
     },
     {
-      "label": "InsightsIcon()",
+      "label": "GoalsIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
       "source_location": "L30",
+      "_origin": "ast",
+      "id": "components_icons_goalsicon",
+      "community": 4,
+      "norm_label": "goalsicon()"
+    },
+    {
+      "label": "InsightsIcon()",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/components/icons.tsx",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "components_icons_insightsicon",
       "community": 4,
@@ -2064,7 +2114,7 @@
       "label": "SettingsIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L39",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "components_icons_settingsicon",
       "community": 4,
@@ -2074,7 +2124,7 @@
       "label": "FeedIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L52",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "components_icons_feedicon",
       "community": 4,
@@ -2084,7 +2134,7 @@
       "label": "UsersIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L62",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "components_icons_usersicon",
       "community": 4,
@@ -2094,17 +2144,17 @@
       "label": "CameraIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L74",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "components_icons_cameraicon",
-      "community": 4,
+      "community": 0,
       "norm_label": "cameraicon()"
     },
     {
       "label": "ImageIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L84",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "components_icons_imageicon",
       "community": 4,
@@ -2114,27 +2164,27 @@
       "label": "CheckIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L94",
+      "source_location": "L104",
       "_origin": "ast",
       "id": "components_icons_checkicon",
-      "community": 7,
+      "community": 0,
       "norm_label": "checkicon()"
     },
     {
       "label": "PlusIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L102",
+      "source_location": "L112",
       "_origin": "ast",
       "id": "components_icons_plusicon",
-      "community": 4,
+      "community": 0,
       "norm_label": "plusicon()"
     },
     {
       "label": "ChevronLeft()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L110",
+      "source_location": "L120",
       "_origin": "ast",
       "id": "components_icons_chevronleft",
       "community": 4,
@@ -2144,7 +2194,7 @@
       "label": "ChevronRight()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L118",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "components_icons_chevronright",
       "community": 4,
@@ -2154,7 +2204,7 @@
       "label": "EditIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L126",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "components_icons_editicon",
       "community": 4,
@@ -2164,7 +2214,7 @@
       "label": "PlayIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L134",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "components_icons_playicon",
       "community": 4,
@@ -2174,7 +2224,7 @@
       "label": "UploadIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L142",
+      "source_location": "L152",
       "_origin": "ast",
       "id": "components_icons_uploadicon",
       "community": 4,
@@ -2184,7 +2234,7 @@
       "label": "ArrowRight()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L151",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "components_icons_arrowright",
       "community": 4,
@@ -2194,10 +2244,10 @@
       "label": "CloseIcon()",
       "file_type": "code",
       "source_file": "Prodactivity/src/components/icons.tsx",
-      "source_location": "L159",
+      "source_location": "L169",
       "_origin": "ast",
       "id": "components_icons_closeicon",
-      "community": 4,
+      "community": 0,
       "norm_label": "closeicon()"
     },
     {
@@ -2207,7 +2257,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_loading_skeletons",
-      "community": 0,
+      "community": 31,
       "norm_label": "loading-skeletons.tsx"
     },
     {
@@ -2217,7 +2267,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "components_loading_skeletons_boneprops",
-      "community": 0,
+      "community": 31,
       "norm_label": "boneprops"
     },
     {
@@ -2227,7 +2277,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "components_loading_skeletons_skeletonbone",
-      "community": 0,
+      "community": 31,
       "norm_label": "skeletonbone()"
     },
     {
@@ -2237,7 +2287,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "components_loading_skeletons_skeletonlistitem",
-      "community": 0,
+      "community": 31,
       "norm_label": "skeletonlistitem()"
     },
     {
@@ -2247,7 +2297,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "components_loading_skeletons_skeletoncard",
-      "community": 0,
+      "community": 31,
       "norm_label": "skeletoncard()"
     },
     {
@@ -2257,7 +2307,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "components_loading_skeletons_skeletonstat",
-      "community": 0,
+      "community": 31,
       "norm_label": "skeletonstat()"
     },
     {
@@ -2267,7 +2317,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_post_card",
-      "community": 2,
+      "community": 0,
       "norm_label": "post-card.tsx"
     },
     {
@@ -2277,7 +2327,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "components_post_card_postcardprops",
-      "community": 2,
+      "community": 0,
       "norm_label": "postcardprops"
     },
     {
@@ -2287,7 +2337,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "components_post_card_postcard",
-      "community": 2,
+      "community": 0,
       "norm_label": "postcard()"
     },
     {
@@ -2337,7 +2387,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_screen",
-      "community": 0,
+      "community": 7,
       "norm_label": "screen.tsx"
     },
     {
@@ -2347,7 +2397,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_screen_screenprops",
-      "community": 0,
+      "community": 7,
       "norm_label": "screenprops"
     },
     {
@@ -2577,8 +2627,128 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "design_auth_useauth",
-      "community": 7,
+      "community": 0,
       "norm_label": "useauth()"
+    },
+    {
+      "label": "data.ts",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "design_data",
+      "community": 10,
+      "norm_label": "data.ts"
+    },
+    {
+      "label": "HabitType",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "design_data_habittype",
+      "community": 10,
+      "norm_label": "habittype"
+    },
+    {
+      "label": "Habit",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "design_data_habit",
+      "community": 10,
+      "norm_label": "habit"
+    },
+    {
+      "label": "SAMPLE_HABITS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "design_data_sample_habits",
+      "community": 10,
+      "norm_label": "sample_habits"
+    },
+    {
+      "label": "mk()",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "design_data_mk",
+      "community": 10,
+      "norm_label": "mk()"
+    },
+    {
+      "label": "HabitMeta",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "design_data_habitmeta",
+      "community": 10,
+      "norm_label": "habitmeta"
+    },
+    {
+      "label": "HABITS_META",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "design_data_habits_meta",
+      "community": 10,
+      "norm_label": "habits_meta"
+    },
+    {
+      "label": "YEAR_LEVELS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "design_data_year_levels",
+      "community": 10,
+      "norm_label": "year_levels"
+    },
+    {
+      "label": "MOSAIC_LEVELS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "design_data_mosaic_levels",
+      "community": 10,
+      "norm_label": "mosaic_levels"
+    },
+    {
+      "label": "WEEKDAYS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "design_data_weekdays",
+      "community": 10,
+      "norm_label": "weekdays"
+    },
+    {
+      "label": "TREND_VALS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "design_data_trend_vals",
+      "community": 10,
+      "norm_label": "trend_vals"
+    },
+    {
+      "label": "DENSITY_LEVELS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "design_data_density_levels",
+      "community": 10,
+      "norm_label": "density_levels"
     },
     {
       "label": "onboarding.tsx",
@@ -2884,17 +3054,17 @@
       "label": "SocialUser",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L30",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "design_social_socialuser",
-      "community": 4,
+      "community": 0,
       "norm_label": "socialuser"
     },
     {
       "label": "FriendRequest",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L33",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "design_social_friendrequest",
       "community": 2,
@@ -2904,7 +3074,7 @@
       "label": "Post",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L35",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "design_social_post",
       "community": 2,
@@ -2914,7 +3084,7 @@
       "label": "Reactions",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L51",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "design_social_reactions",
       "community": 2,
@@ -2924,7 +3094,7 @@
       "label": "Nudge",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L53",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "design_social_nudge",
       "community": 2,
@@ -2934,7 +3104,7 @@
       "label": "REACTION_EMOJIS",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L55",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "design_social_reaction_emojis",
       "community": 2,
@@ -2944,7 +3114,7 @@
       "label": "Persisted",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L57",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "design_social_persisted",
       "community": 2,
@@ -2954,17 +3124,57 @@
       "label": "Cached",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L66",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "design_social_cached",
       "community": 2,
       "norm_label": "cached"
     },
     {
+      "label": "FRIENDS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "design_social_friends",
+      "community": 2,
+      "norm_label": "friends"
+    },
+    {
+      "label": "SEED_POSTS()",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L86",
+      "_origin": "ast",
+      "id": "design_social_seed_posts",
+      "community": 2,
+      "norm_label": "seed_posts()"
+    },
+    {
+      "label": "SEED_REACTIONS",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "design_social_seed_reactions",
+      "community": 2,
+      "norm_label": "seed_reactions"
+    },
+    {
+      "label": "SEED_NUDGES()",
+      "file_type": "code",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "design_social_seed_nudges",
+      "community": 2,
+      "norm_label": "seed_nudges()"
+    },
+    {
       "label": "uid()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L72",
+      "source_location": "L111",
       "_origin": "ast",
       "id": "design_social_uid",
       "community": 2,
@@ -2974,7 +3184,7 @@
       "label": "persistLocalPhoto()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L77",
+      "source_location": "L116",
       "_origin": "ast",
       "id": "design_social_persistlocalphoto",
       "community": 2,
@@ -2984,17 +3194,17 @@
       "label": "timeAgo()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L91",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "design_social_timeago",
-      "community": 2,
+      "community": 0,
       "norm_label": "timeago()"
     },
     {
       "label": "NewPost",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L105",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "design_social_newpost",
       "community": 2,
@@ -3004,7 +3214,7 @@
       "label": "SocialValue",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L107",
+      "source_location": "L146",
       "_origin": "ast",
       "id": "design_social_socialvalue",
       "community": 2,
@@ -3014,7 +3224,7 @@
       "label": "SocialContext",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L139",
+      "source_location": "L179",
       "_origin": "ast",
       "id": "design_social_socialcontext",
       "community": 2,
@@ -3024,7 +3234,7 @@
       "label": "SocialProvider()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L141",
+      "source_location": "L181",
       "_origin": "ast",
       "id": "design_social_socialprovider",
       "community": 7,
@@ -3034,10 +3244,10 @@
       "label": "useSocial()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/social.tsx",
-      "source_location": "L388",
+      "source_location": "L435",
       "_origin": "ast",
       "id": "design_social_usesocial",
-      "community": 4,
+      "community": 0,
       "norm_label": "usesocial()"
     },
     {
@@ -3047,7 +3257,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "design_store",
-      "community": 9,
+      "community": 1,
       "norm_label": "store.tsx"
     },
     {
@@ -3067,7 +3277,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "design_store_habitdef",
-      "community": 4,
+      "community": 1,
       "norm_label": "habitdef"
     },
     {
@@ -3077,7 +3287,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "design_store_profile",
-      "community": 9,
+      "community": 1,
       "norm_label": "profile"
     },
     {
@@ -3087,7 +3297,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "design_store_logs",
-      "community": 9,
+      "community": 1,
       "norm_label": "logs"
     },
     {
@@ -3107,7 +3317,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "design_store_cached",
-      "community": 9,
+      "community": 1,
       "norm_label": "cached"
     },
     {
@@ -3117,7 +3327,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "design_store_habitview",
-      "community": 0,
+      "community": 1,
       "norm_label": "habitview"
     },
     {
@@ -3127,7 +3337,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "design_store_all_days",
-      "community": 9,
+      "community": 1,
       "norm_label": "all_days"
     },
     {
@@ -3137,7 +3347,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "design_store_seed_habits",
-      "community": 9,
+      "community": 1,
       "norm_label": "seed_habits"
     },
     {
@@ -3147,7 +3357,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "design_store_seed_profile",
-      "community": 9,
+      "community": 1,
       "norm_label": "seed_profile"
     },
     {
@@ -3197,7 +3407,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "design_store_weekstart",
-      "community": 0,
+      "community": 7,
       "norm_label": "weekstart"
     },
     {
@@ -3247,7 +3457,7 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "design_store_storevalue",
-      "community": 9,
+      "community": 1,
       "norm_label": "storevalue"
     },
     {
@@ -3257,7 +3467,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "design_store_storecontext",
-      "community": 9,
+      "community": 1,
       "norm_label": "storecontext"
     },
     {
@@ -3277,7 +3487,7 @@
       "source_location": "L491",
       "_origin": "ast",
       "id": "design_store_usestore",
-      "community": 4,
+      "community": 0,
       "norm_label": "usestore()"
     },
     {
@@ -3287,7 +3497,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "design_sync",
-      "community": 9,
+      "community": 1,
       "norm_label": "sync.ts"
     },
     {
@@ -3297,7 +3507,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "design_sync_dbhabit",
-      "community": 9,
+      "community": 1,
       "norm_label": "dbhabit"
     },
     {
@@ -3307,7 +3517,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "design_sync_dblog",
-      "community": 9,
+      "community": 1,
       "norm_label": "dblog"
     },
     {
@@ -3317,7 +3527,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "design_sync_remotesnapshot",
-      "community": 9,
+      "community": 1,
       "norm_label": "remotesnapshot"
     },
     {
@@ -3327,7 +3537,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "design_sync_pendingop",
-      "community": 9,
+      "community": 1,
       "norm_label": "pendingop"
     },
     {
@@ -3347,7 +3557,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "design_sync_isuuid",
-      "community": 9,
+      "community": 1,
       "norm_label": "isuuid()"
     },
     {
@@ -3357,7 +3567,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "design_sync_rowtodef",
-      "community": 9,
+      "community": 1,
       "norm_label": "rowtodef()"
     },
     {
@@ -3367,7 +3577,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "design_sync_deftorow",
-      "community": 9,
+      "community": 1,
       "norm_label": "deftorow()"
     },
     {
@@ -3377,7 +3587,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "design_sync_pullall",
-      "community": 9,
+      "community": 1,
       "norm_label": "pullall()"
     },
     {
@@ -3387,7 +3597,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "design_sync_pushhabit",
-      "community": 9,
+      "community": 1,
       "norm_label": "pushhabit()"
     },
     {
@@ -3397,7 +3607,7 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "design_sync_deletehabit",
-      "community": 9,
+      "community": 1,
       "norm_label": "deletehabit()"
     },
     {
@@ -3407,7 +3617,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "design_sync_pushlog",
-      "community": 9,
+      "community": 1,
       "norm_label": "pushlog()"
     },
     {
@@ -3417,7 +3627,7 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "design_sync_pushprofile",
-      "community": 9,
+      "community": 1,
       "norm_label": "pushprofile()"
     },
     {
@@ -3427,7 +3637,7 @@
       "source_location": "L164",
       "_origin": "ast",
       "id": "design_sync_uploadavatar",
-      "community": 7,
+      "community": 1,
       "norm_label": "uploadavatar()"
     },
     {
@@ -3437,7 +3647,7 @@
       "source_location": "L183",
       "_origin": "ast",
       "id": "design_sync_savepending",
-      "community": 9,
+      "community": 1,
       "norm_label": "savepending()"
     },
     {
@@ -3447,7 +3657,7 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "design_sync_replayop",
-      "community": 9,
+      "community": 1,
       "norm_label": "replayop()"
     },
     {
@@ -3457,7 +3667,7 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "design_sync_drainqueue",
-      "community": 9,
+      "community": 1,
       "norm_label": "drainqueue()"
     },
     {
@@ -3467,7 +3677,7 @@
       "source_location": "L238",
       "_origin": "ast",
       "id": "design_sync_reconcileandpush",
-      "community": 9,
+      "community": 1,
       "norm_label": "reconcileandpush()"
     },
     {
@@ -3477,44 +3687,44 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "design_theme",
-      "community": 7,
+      "community": 0,
       "norm_label": "theme.tsx"
     },
     {
       "label": "ThemePref",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/theme.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "design_theme_themepref",
-      "community": 7,
+      "community": 0,
       "norm_label": "themepref"
     },
     {
       "label": "ThemeContextValue",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/theme.tsx",
-      "source_location": "L11",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "design_theme_themecontextvalue",
-      "community": 7,
+      "community": 0,
       "norm_label": "themecontextvalue"
     },
     {
       "label": "ThemeContext",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/theme.tsx",
-      "source_location": "L17",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "design_theme_themecontext",
-      "community": 7,
+      "community": 0,
       "norm_label": "themecontext"
     },
     {
       "label": "ThemeProvider()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/theme.tsx",
-      "source_location": "L19",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "design_theme_themeprovider",
       "community": 7,
@@ -3524,7 +3734,7 @@
       "label": "useTheme()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/theme.tsx",
-      "source_location": "L44",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "design_theme_usetheme",
       "community": 0,
@@ -3534,7 +3744,7 @@
       "label": "useThemePref()",
       "file_type": "code",
       "source_file": "Prodactivity/src/design/theme.tsx",
-      "source_location": "L50",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "design_theme_usethemepref",
       "community": 0,
@@ -3547,7 +3757,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "design_week_start",
-      "community": 0,
+      "community": 7,
       "norm_label": "week-start.tsx"
     },
     {
@@ -3557,7 +3767,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "design_week_start_weekstartvalue",
-      "community": 0,
+      "community": 7,
       "norm_label": "weekstartvalue"
     },
     {
@@ -3567,7 +3777,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "design_week_start_weekstartcontext",
-      "community": 0,
+      "community": 7,
       "norm_label": "weekstartcontext"
     },
     {
@@ -3577,7 +3787,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "design_week_start_weekstartprovider",
-      "community": 0,
+      "community": 7,
       "norm_label": "weekstartprovider()"
     },
     {
@@ -3597,7 +3807,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_supabase",
-      "community": 9,
+      "community": 2,
       "norm_label": "supabase.ts"
     },
     {
@@ -3607,7 +3817,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_supabase_issupabaseconfigured",
-      "community": 9,
+      "community": 2,
       "norm_label": "issupabaseconfigured"
     },
     {
@@ -5977,6 +6187,190 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_glass"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_glass_glass"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_icons"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_icons_chevronright"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_progress_ring"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_progress_ring_progressring"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_screen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_screen_screen"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_text"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_text_body"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "components_text_display"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "design_theme"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "design_theme_usetheme"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "tabs_goals_featured"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "tabs_goals_goals"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tabs_goals",
+      "target": "tabs_goals_goalsscreen"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Prodactivity/src/app/(tabs)/goals.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "tabs_goals_goalsscreen",
+      "target": "design_theme_usetheme"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "Prodactivity/src/app/(tabs)/habits.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -6418,9 +6812,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/index.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_index",
-      "target": "design_store_adddays"
+      "target": "design_store_adddays",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -6473,9 +6867,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/index.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_index",
-      "target": "design_store_weekstartdate"
+      "target": "design_store_weekstartdate",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -6506,9 +6900,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/index.tsx",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_index",
-      "target": "design_week_start"
+      "target": "design_week_start",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -6517,9 +6911,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/index.tsx",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_index",
-      "target": "design_week_start_useweekstart"
+      "target": "design_week_start_useweekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6842,9 +7236,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/insights.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_insights",
-      "target": "design_week_start"
+      "target": "design_week_start",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -6853,9 +7247,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/insights.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_insights",
-      "target": "design_week_start_useweekstart"
+      "target": "design_week_start_useweekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7153,9 +7547,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/settings.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_settings",
-      "target": "design_week_start"
+      "target": "design_week_start",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -7164,9 +7558,9 @@
       "source_file": "Prodactivity/src/app/(tabs)/settings.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tabs_settings",
-      "target": "design_week_start_useweekstart"
+      "target": "design_week_start_useweekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7549,9 +7943,9 @@
       "source_file": "Prodactivity/src/app/_layout.tsx",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "app_layout",
-      "target": "design_week_start"
+      "target": "design_week_start",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -7560,9 +7954,9 @@
       "source_file": "Prodactivity/src/app/_layout.tsx",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "app_layout",
-      "target": "design_week_start_weekstartprovider"
+      "target": "design_week_start_weekstartprovider",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -8212,9 +8606,9 @@
       "source_file": "Prodactivity/src/app/create.tsx",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "app_create",
-      "target": "design_week_start"
+      "target": "design_week_start",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -8223,9 +8617,9 @@
       "source_file": "Prodactivity/src/app/create.tsx",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "app_create",
-      "target": "design_week_start_useweekstart"
+      "target": "design_week_start_useweekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -9909,22 +10303,22 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "Prodactivity/src/components/habit-card.tsx",
-      "source_location": "L10",
+      "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_habit_card",
-      "target": "design_store",
-      "confidence_score": 1.0
+      "target": "design_data"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "Prodactivity/src/components/habit-card.tsx",
-      "source_location": "L10",
+      "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_habit_card",
-      "target": "design_store_habitview",
-      "confidence_score": 1.0
+      "target": "design_data_habit"
     },
     {
       "relation": "imports_from",
@@ -10123,6 +10517,16 @@
       "confidence_score": 1.0,
       "source": "components_icons",
       "target": "components_icons_feedicon"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/components/icons.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_icons",
+      "target": "components_icons_goalsicon"
     },
     {
       "relation": "contains",
@@ -10979,6 +11383,116 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_density_levels"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_habit"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_habitmeta"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_habits_meta"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_habittype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_mk"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_mosaic_levels"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_sample_habits"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L77",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_trend_vals"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_weekdays"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/data.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_data",
+      "target": "design_data_year_levels"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "Prodactivity/src/design/onboarding.tsx",
       "source_location": "L22",
       "weight": 1.0,
@@ -11523,6 +12037,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L82",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_social",
+      "target": "design_social_friends"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/social.tsx",
       "source_location": "L149",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -11588,6 +12112,36 @@
       "confidence_score": 1.0,
       "source": "design_social",
       "target": "design_social_reactions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L110",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_social",
+      "target": "design_social_seed_nudges"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L94",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_social",
+      "target": "design_social_seed_posts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Prodactivity/src/design/social.tsx",
+      "source_location": "L104",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "design_social",
+      "target": "design_social_seed_reactions"
     },
     {
       "relation": "contains",
@@ -11919,9 +12473,9 @@
       "source_file": "Prodactivity/src/design/store.tsx",
       "source_location": "L103",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_store",
-      "target": "design_store_weekstart"
+      "target": "design_store_weekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11929,9 +12483,9 @@
       "source_file": "Prodactivity/src/design/store.tsx",
       "source_location": "L106",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_store",
-      "target": "design_store_weekstartdate"
+      "target": "design_store_weekstartdate",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -12094,9 +12648,9 @@
       "source_file": "Prodactivity/src/design/week-start.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_week_start",
-      "target": "design_store"
+      "target": "design_store",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -12204,9 +12758,9 @@
       "source_file": "Prodactivity/src/design/store.tsx",
       "source_location": "L107",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_store_weekstartdate",
-      "target": "design_store_weekdaymon0"
+      "target": "design_store_weekdaymon0",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -12237,9 +12791,9 @@
       "source_file": "Prodactivity/src/design/store.tsx",
       "source_location": "L109",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_store_weekstartdate",
-      "target": "design_store_adddays"
+      "target": "design_store_adddays",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -12248,9 +12802,9 @@
       "source_file": "Prodactivity/src/design/week-start.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_week_start",
-      "target": "design_store_weekstart"
+      "target": "design_store_weekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -12608,9 +13162,9 @@
       "source_file": "Prodactivity/src/design/week-start.tsx",
       "source_location": "L39",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_week_start",
-      "target": "design_week_start_useweekstart"
+      "target": "design_week_start_useweekstart",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12618,9 +13172,9 @@
       "source_file": "Prodactivity/src/design/week-start.tsx",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_week_start",
-      "target": "design_week_start_weekstartcontext"
+      "target": "design_week_start_weekstartcontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12628,9 +13182,9 @@
       "source_file": "Prodactivity/src/design/week-start.tsx",
       "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_week_start",
-      "target": "design_week_start_weekstartprovider"
+      "target": "design_week_start_weekstartprovider",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12638,9 +13192,9 @@
       "source_file": "Prodactivity/src/design/week-start.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "design_week_start",
-      "target": "design_week_start_weekstartvalue"
+      "target": "design_week_start_weekstartvalue",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",

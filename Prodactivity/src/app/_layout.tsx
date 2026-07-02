@@ -7,12 +7,15 @@ import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Svg, { G, Path } from 'react-native-svg';
 
-import { AuthProvider } from '@/design/auth';
+import { AuthProvider, useAuth } from '@/design/auth';
 import { OnboardingProvider, useOnboarding } from '@/design/onboarding';
 import { ThemeProvider, useTheme } from '@/design/theme';
 import { DISPLAY_FONT } from '@/design/tokens';
 import { StoreProvider, useStore } from '@/design/store';
 import { SocialProvider } from '@/design/social';
+import { WeekStartProvider } from '@/design/week-start';
+import { Body, Display } from '@/components/text';
+import { Wallpaper } from '@/components/wallpaper';
 
 function StreakrLogo({ size = 40 }: { size?: number }) {
   return (
@@ -70,10 +73,30 @@ function AppSplash({ onDone }: { onDone: () => void }) {
   );
 }
 
+/** Blocking screen shown when Supabase isn't configured — the app is online-only. */
+function BackendRequiredScreen() {
+  return (
+    <Wallpaper>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, gap: 10 }}>
+        <Body size={44}>☁️</Body>
+        <Display size={20} weight="700" style={{ textAlign: 'center' }}>
+          Backend not configured
+        </Display>
+        <Body size={13.5} secondary style={{ textAlign: 'center', lineHeight: 20 }}>
+          Streakr needs a Supabase connection to run. Add EXPO_PUBLIC_SUPABASE_URL and
+          EXPO_PUBLIC_SUPABASE_ANON_KEY to .env.local and restart the app.
+        </Body>
+      </View>
+    </Wallpaper>
+  );
+}
+
 function Navigator() {
   const { ready } = useStore();
   const { ready: onbReady, onboarded } = useOnboarding();
-  if (!ready || !onbReady) return null;
+  const { ready: authReady, configured, session } = useAuth();
+  if (!ready || !onbReady || !authReady) return null;
+  if (!configured) return <BackendRequiredScreen />;
 
   return (
     <Stack
@@ -85,7 +108,12 @@ function Navigator() {
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
 
-      <Stack.Protected guard={onboarded}>
+      {/* Streakr is a social app — no using it signed out. */}
+      <Stack.Protected guard={onboarded && !session}>
+        <Stack.Screen name="auth" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={onboarded && !!session}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="habit/[id]" />
         <Stack.Screen name="create" options={{ presentation: 'modal' }} />
@@ -94,9 +122,6 @@ function Navigator() {
         <Stack.Screen name="compose" options={{ presentation: 'modal' }} />
         <Stack.Screen name="friends" options={{ presentation: 'modal' }} />
       </Stack.Protected>
-
-      {/* Reachable from both onboarding and the app, so it stays outside the gate. */}
-      <Stack.Screen name="auth" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }
@@ -123,16 +148,18 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
-        <AuthProvider>
-          <StoreProvider>
-            <SocialProvider>
-              <OnboardingProvider>
-                <App />
-              </OnboardingProvider>
-            </SocialProvider>
-          </StoreProvider>
-        </AuthProvider>
+        <WeekStartProvider>
+          <AuthProvider>
+            <StoreProvider>
+              <SocialProvider>
+                <OnboardingProvider>
+                  <App />
+                </OnboardingProvider>
+              </SocialProvider>
+            </StoreProvider>
+          </AuthProvider>
+        </WeekStartProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
-  );
+  );;
 }

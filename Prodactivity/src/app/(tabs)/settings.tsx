@@ -11,6 +11,7 @@ import { useAuth } from '@/design/auth';
 import { MAX_FREEZES, useStore } from '@/design/store';
 import { useTheme, useThemePref } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
+import { useWeekStart } from '@/design/week-start';
 
 const PREF_LABEL: Record<string, 'light' | 'dark' | 'auto'> = { Light: 'light', Dark: 'dark', Auto: 'auto' };
 const LABEL_FROM_PREF: Record<string, string> = { light: 'Light', dark: 'Dark', auto: 'Auto' };
@@ -54,16 +55,12 @@ export default function SettingsScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { pref, setPref } = useThemePref();
+  const { weekStart, setWeekStart } = useWeekStart();
   const { profile, freezes } = useStore();
-  const { configured, session, user, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const [reminders, setReminders] = useState(false);
 
-  const signedIn = Boolean(session);
-  const accountSub = !configured
-    ? 'Local-first · no account needed'
-    : signedIn
-      ? `Synced · ${user?.email ?? 'signed in'}`
-      : 'Local-first · sign in to sync';
+  const accountSub = `Synced · ${user?.email ?? 'signed in'}`;
 
   return (
     <Screen>
@@ -98,24 +95,22 @@ export default function SettingsScreen() {
       </Pressable>
 
       {/* Account / sync */}
-      {configured && (
-        <Pressable onPress={() => (signedIn ? signOut() : router.push('/auth'))}>
-          <Glass radius={22} style={{ flexDirection: 'row', alignItems: 'center', gap: 11, padding: 14, marginTop: 14 }}>
-            <IconTile emoji={signedIn ? '☁️' : '🔑'} color={Palette.water} />
-            <View style={{ flex: 1 }}>
-              <Body size={14.5} weight="500">
-                {signedIn ? 'Sign out' : 'Sign in to sync'}
-              </Body>
-              <Body size={12} secondary style={{ marginTop: 3 }}>
-                {signedIn ? 'Your habits back up across devices' : 'Back up and sync across devices'}
-              </Body>
-            </View>
-            <Body size={13.5} weight="500" color={signedIn ? Palette.coral : theme.accent}>
-              {signedIn ? 'Sign out' : 'Sign in'} ›
+      <Pressable onPress={() => signOut()}>
+        <Glass radius={22} style={{ flexDirection: 'row', alignItems: 'center', gap: 11, padding: 14, marginTop: 14 }}>
+          <IconTile emoji="☁️" color={Palette.water} />
+          <View style={{ flex: 1 }}>
+            <Body size={14.5} weight="500">
+              Sign out
             </Body>
-          </Glass>
-        </Pressable>
-      )}
+            <Body size={12} secondary style={{ marginTop: 3 }}>
+              Your habits back up across devices
+            </Body>
+          </View>
+          <Body size={13.5} weight="500" color={Palette.coral}>
+            Sign out ›
+          </Body>
+        </Glass>
+      </Pressable>
 
       {/* Theme + week start */}
       <Glass radius={22} style={{ marginTop: 14, overflow: 'hidden' }}>
@@ -141,9 +136,12 @@ export default function SettingsScreen() {
               Week starts on
             </Body>
           </View>
-          <Body size={13.5} weight="500" secondary>
-            Monday ›
-          </Body>
+          <Segmented
+            options={['Monday', 'Sunday']}
+            value={weekStart === 'sunday' ? 'Sunday' : 'Monday'}
+            onChange={(v) => setWeekStart(v === 'Sunday' ? 'sunday' : 'monday')}
+            paddingH={11}
+          />
         </View>
       </Glass>
 

@@ -46,7 +46,7 @@ export type Profile = { name: string; emoji: string; username?: string; avatar_u
 /** habitId → (YYYY-MM-DD → amount logged that day). */
 export type Logs = Record<string, Record<string, number>>;
 
-type Persisted = { habits: HabitDef[]; logs: Logs; profile: Profile; freezes?: number; frozenArr?: string[] };
+export type Persisted = { habits: HabitDef[]; logs: Logs; profile: Profile; freezes?: number; frozenArr?: string[] };
 
 /** On-disk shape: the exportable data plus which account the cache belongs to. */
 type Cached = Persisted & { ownerId?: string | null };
@@ -93,10 +93,20 @@ export function weekdayMon0(d: Date): number {
   return (d.getDay() + 6) % 7;
 }
 
-function addDays(d: Date, n: number): Date {
+export function addDays(d: Date, n: number): Date {
   const r = new Date(d);
   r.setDate(r.getDate() + n);
   return r;
+}
+
+/** Display-only week-start preference. Habit schedules are always stored Mon→Sun (see `HabitDef.days`). */
+export type WeekStart = 'monday' | 'sunday';
+
+/** Start of the displayed week containing `d`, per the week-start preference. */
+export function weekStartDate(d: Date, weekStart: WeekStart = 'monday'): Date {
+  const idx = weekdayMon0(d);
+  const back = weekStart === 'sunday' ? (idx + 1) % 7 : idx;
+  return addDays(d, -back);
 }
 
 // ------------------------------------------------------------ streak compute
