@@ -7,15 +7,11 @@ import { Heatmap } from '@/components/heatmap';
 import { Screen } from '@/components/screen';
 import { Segmented } from '@/components/segmented';
 import { Body, Display } from '@/components/text';
-import { computeStreak, dateKey, useStore, type HabitDef } from '@/design/store';
+import { computeStreak, dateKey, useStore, weekdayMon0, type HabitDef } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { tint } from '@/design/tokens';
 
 const MOSAIC_DAYS = 180;
-
-function weekdayMon0(d: Date) {
-  return (d.getDay() + 6) % 7;
-}
 
 /** Build last-180-day heat levels + completion % for a habit. */
 function summarize(habit: HabitDef, log: Record<string, number>) {
@@ -53,7 +49,7 @@ export default function HabitsScreen() {
             All habits
           </Display>
           <Body size={13} secondary style={{ marginTop: 6 }}>
-            {habits.length} active · this quarter
+            {habits.length} active · last 180 days
           </Body>
         </View>
         <Segmented options={['Mosaic', 'List']} value={mode} onChange={setMode} />

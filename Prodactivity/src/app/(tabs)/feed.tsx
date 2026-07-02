@@ -1,7 +1,9 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { TAB_BAR_HEIGHT } from '@/components/floating-tab-bar';
 import { Glass } from '@/components/glass';
 import { CameraIcon, CloseIcon, UsersIcon } from '@/components/icons';
 import { PostCard } from '@/components/post-card';
@@ -16,6 +18,7 @@ import { Palette, tint } from '@/design/tokens';
 export default function FeedScreen() {
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { configured } = useAuth();
   const { profile } = useStore();
   const { live, feedPosts, friends, unseenNudges, userById, nudge, markNudgesSeen, meId } = useSocial();
@@ -161,7 +164,7 @@ export default function FeedScreen() {
 
       {/* Toast */}
       {toast && (
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 116, alignItems: 'center' }} pointerEvents="none">
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: Math.max(insets.bottom, 12) + TAB_BAR_HEIGHT + 22, alignItems: 'center' }} pointerEvents="none">
           <View style={{ paddingHorizontal: 16, paddingVertical: 10, borderRadius: 14, backgroundColor: theme.scheme === 'dark' ? '#2a2a36' : '#22222a' }}>
             <Body size={13} weight="600" color="#fff">
               {toast}
@@ -176,7 +179,7 @@ export default function FeedScreen() {
         style={{
           position: 'absolute',
           right: 22,
-          bottom: 102,
+          bottom: Math.max(insets.bottom, 12) + TAB_BAR_HEIGHT + 8,
           width: 54,
           height: 54,
           borderRadius: 19,

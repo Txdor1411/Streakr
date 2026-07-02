@@ -9,15 +9,11 @@ import { CheckIcon, ChevronLeft } from '@/components/icons';
 import { StreakFlame } from '@/components/streak-flame';
 import { Body, Display } from '@/components/text';
 import { Wallpaper } from '@/components/wallpaper';
-import { computeBestStreak, computeStreak, dateKey, todayKey, useStore, type HabitDef } from '@/design/store';
+import { computeBestStreak, computeStreak, dateKey, todayKey, useStore, weekdayMon0, type HabitDef } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-function weekdayMon0(d: Date) {
-  return (d.getDay() + 6) % 7;
-}
 
 /** Completion amount → 0–4 heat level for a habit. */
 function levelFor(habit: HabitDef, amount: number) {

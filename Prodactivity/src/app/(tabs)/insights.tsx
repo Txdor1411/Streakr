@@ -8,7 +8,7 @@ import { Heatmap } from '@/components/heatmap';
 import { Screen } from '@/components/screen';
 import { Segmented } from '@/components/segmented';
 import { Body, Display } from '@/components/text';
-import { dateKey, useStore } from '@/design/store';
+import { dateKey, useStore, weekdayMon0 } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
 
@@ -19,10 +19,6 @@ const RANGE_SUBTITLE = { W: 'Your momentum this week', M: 'Your momentum this mo
 const DENSITY_DAYS = 98; // 14 columns × 7
 
 type Range = keyof typeof RANGE_DAYS;
-
-function weekdayMon0(d: Date) {
-  return (d.getDay() + 6) % 7;
-}
 
 type DayStat = { date: Date; rate: number | null; doneCount: number; active: boolean; frozen: boolean };
 

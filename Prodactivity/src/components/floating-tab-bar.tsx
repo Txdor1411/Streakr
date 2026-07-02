@@ -83,6 +83,8 @@ export function FloatingTabBar({ state, navigation }: { state: any; navigation: 
   );
 }
 
+export const TAB_BAR_HEIGHT = 62;
+
 const styles = StyleSheet.create({
   wrap: {
     position: 'absolute',
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   bar: {
-    height: 62,
+    height: TAB_BAR_HEIGHT,
   },
   row: {
     flex: 1,

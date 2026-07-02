@@ -89,7 +89,7 @@ export function todayKey(): string {
 }
 
 /** Monday = 0 … Sunday = 6, matching the `days` schedule array. */
-function weekdayMon0(d: Date): number {
+export function weekdayMon0(d: Date): number {
   return (d.getDay() + 6) % 7;
 }
 

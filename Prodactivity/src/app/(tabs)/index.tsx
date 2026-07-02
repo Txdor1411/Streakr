@@ -1,23 +1,21 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useMemo, type ReactNode } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withDelay, withTiming, Easing } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Confetti } from '@/components/confetti';
+import { TAB_BAR_HEIGHT } from '@/components/floating-tab-bar';
 import { Glass } from '@/components/glass';
 import { PlusIcon } from '@/components/icons';
 import { HabitCard } from '@/components/habit-card';
 import { Screen } from '@/components/screen';
 import { Body, Display } from '@/components/text';
-import { dateKey, useStore, type HabitView } from '@/design/store';
+import { dateKey, useStore, weekdayMon0, type HabitView } from '@/design/store';
 import { useTheme } from '@/design/theme';
 import { Palette, tint } from '@/design/tokens';
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-function weekdayMon0(d: Date) {
-  return (d.getDay() + 6) % 7;
-}
 
 function subFor(h: HabitView) {
   if (h.type === 'count') return `${h.value} of ${h.goal} ${h.sub}`;
@@ -46,6 +44,7 @@ function AnimatedCard({ index, children }: { index: number; children: ReactNode 
 export default function TodayScreen() {
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { profile, habitsForDay, logHabit, frozenDates, freezes, freezeDay } = useStore();
 
   const firstName = profile.name.trim().split(/\s+/)[0] || 'there';
@@ -87,16 +86,20 @@ export default function TodayScreen() {
 
   // Overall streak = consecutive scheduled days where every habit was done (or frozen).
   // Days with nothing scheduled are skipped, matching per-habit streak behaviour.
-  let streak = 0;
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(now);
-    d.setDate(now.getDate() - i);
-    const key = dateKey(d);
-    const dh = habitsForDay(key).filter((h) => h.days[weekdayMon0(d)]);
-    if (dh.length === 0) continue;
-    if (dh.every((h) => h.done) || frozenDates.has(key)) streak++;
-    else if (i !== 0) break;
-  }
+  const streak = useMemo(() => {
+    const today = new Date();
+    let s = 0;
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const key = dateKey(d);
+      const dh = habitsForDay(key).filter((h) => h.days[weekdayMon0(d)]);
+      if (dh.length === 0) continue;
+      if (dh.every((h) => h.done) || frozenDates.has(key)) s++;
+      else if (i !== 0) break;
+    }
+    return s;
+  }, [habitsForDay, frozenDates]);
 
   const dateLabel = now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -270,7 +273,7 @@ export default function TodayScreen() {
       </Screen>
 
       {/* Floating add button */}
-      <Animated.View style={[fabStyle, { position: 'absolute', right: 22, bottom: 102 }]}>
+      <Animated.View style={[fabStyle, { position: 'absolute', right: 22, bottom: Math.max(insets.bottom, 12) + TAB_BAR_HEIGHT + 8 }]}>
         <Pressable
           onPress={() => router.push('/create')}
           onPressIn={() => { fabScale.value = withTiming(0.92, { duration: 80, easing: Easing.out(Easing.quad) }); }}
